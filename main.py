@@ -22,7 +22,3 @@ def get_blogs():
         }
     ]
     return jsonify(blogs)
-
-#MAINLOOP
-if __name__ == '__main__':
-    app.run(debug=True)
