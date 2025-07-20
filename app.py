@@ -6,7 +6,6 @@ app = Flask(__name__)
 CORS(app)
 
 UPLOAD_FOLDER = 'blogs'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/blogs/<filename>')
 def serve_pdf(filename):
