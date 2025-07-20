@@ -18,18 +18,19 @@ def get_blogs():
 
 @app.route('/upload', methods=['POST'])
 def upload_blog():
-    file = request.files['pdf']
-    if not file or not file.filename.endswith('.pdf'):
+    name=request.form['name']
+    file=request.files['pdf']
+    if not file or not file.filename.endswith('.pdf') or os.path.exists(f"/blogs/{name}.pdf"):
         return 'Invalid file', 400
 
     file.save(os.path.join('static', UPLOAD_FOLDER, file.filename))  # Save under static/blogs/
 
     new_post = {
-        "name": request.form['name'],
+        "name": name,
         "description": request.form['description'],
         "published": request.form['published'],
         "username": request.form['username'],
-        "url": f"https://trade-thesis.onrender.com/blogs/{file.filename}"
+        "url": f"https://trade-thesis.onrender.com/blogs/{name}.pdf"
     }
 
     with open('posts.json', 'r+') as f:
