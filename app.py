@@ -1,8 +1,10 @@
 #IMPORTS
 from flask import Flask, jsonify
+from flask_cors import CORS
 
 #SETUP
 app = Flask(__name__)
+CORS(app)
 
 #FUNCTIONS
 @app.route('/blogs')
