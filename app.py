@@ -75,6 +75,6 @@ blogs = [
 ]
 
 #FUNCTIONS
-@app.route('/blogs')
+@app.route('/blog')
 def get_blogs():
     return jsonify(blogs)
