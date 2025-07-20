@@ -11,7 +11,7 @@ UPLOAD_FOLDER = 'blogs'
 def serve_pdf(filename):
     return app.send_static_file(os.path.join(UPLOAD_FOLDER, filename))
 
-@app.route('/blogs')
+@app.route('/blog')
 def get_blogs():
     with open('posts.json') as f:
         return jsonify(json.load(f))
@@ -20,7 +20,7 @@ def get_blogs():
 def upload_blog():
     name=request.form['name']
     file=request.files['pdf']
-    if not file or not file.filename.endswith('.pdf') or os.path.exists(f"/blogs/{name}.pdf"):
+    if not file or not file.filename.endswith('.pdf') or os.path.isfile(f"/blogs/{name}.pdf"):
         return 'Invalid file', 400
 
     file.save(os.path.join('static', UPLOAD_FOLDER, file.filename))  # Save under static/blogs/
