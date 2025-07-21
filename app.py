@@ -8,81 +8,32 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
-df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv")
-print(df)
 
 #FUNCTIONS
 def get_sheet():
-  return [
-  {
-    "name": "How to Read Markets",
-    "description": "Understanding the basics of market movement.",
-    "published": "2025-07-18",
-    "url": "https://example.com/read-markets"
-  },
-  {
-    "name": "Risk Management 101",
-    "description": "Beginner strategies for managing trading risk.",
-    "published": "2025-07-12",
-    "url": "https://example.com/risk-management"
-  },
-  {
-    "name": "Technical Analysis Simplified",
-    "description": "Learn how to read charts and spot patterns.",
-    "published": "2025-07-05",
-    "url": "https://example.com/technical-analysis"
-  },
-  {
-    "name": "Top 5 Trading Indicators",
-    "description": "Which indicators are worth your attention?",
-    "published": "2025-06-30",
-    "url": "https://example.com/trading-indicators"
-  },
-  {
-    "name": "Psychology of Trading",
-    "description": "How to manage emotions during trades.",
-    "published": "2025-06-25",
-    "url": "https://example.com/trading-psychology"
-  },
-  {
-    "name": "Creating a Trading Journal",
-    "description": "Why documenting your trades leads to improvement.",
-    "published": "2025-06-20",
-    "url": "https://example.com/trading-journal"
-  },
-  {
-    "name": "Understanding Candlestick Patterns",
-    "description": "A deep dive into common price action signals.",
-    "published": "2025-06-15",
-    "url": "https://example.com/candlestick-patterns"
-  },
-  {
-    "name": "Intro to Forex Trading",
-    "description": "A guide to currency markets for beginners.",
-    "published": "2025-06-10",
-    "url": "https://example.com/forex-intro"
-  },
-  {
-    "name": "Common Trading Mistakes",
-    "description": "Avoid these traps early traders fall into.",
-    "published": "2025-06-01",
-    "url": "https://example.com/trading-mistakes"
-  },
-  {
-    "name": "The Role of News in Trading",
-    "description": "How economic events affect market movement.",
-    "published": "2025-05-25",
-    "url": "https://example.com/news-impact"
-  },
-  {
-    "name": "Building a Backtested Strategy",
-    "description": "Why backtesting matters and how to start.",
-    "published": "2025-05-20",
-    "url": "https://example.com/backtesting-strategy"
-  }
-]
-  
+  blogs=[]
+  df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv")
+  userdict={}
+  for index,i in df.iterrows():
+    email=i["Email address"]
+    if not email in userdict.keys():
+      _=i["Username"]
+      userdict[email]=_
+      username=_
+    username=userdict[email]
+    blogs.append({
+      "name":i["Post Name"],
+      "description":i["Post Description"],
+      "published":i["Timestamp"],
+      "url":i["Upload Post"],
+      "username":username
+    })
+  return blogs
+
+#MAINLOOP
+  #PREREQS
+blogs=get_sheet()
+  #FLASK
 @app.route('/blog')
 def get_blogs():
-  blogs = get_sheet()
   return jsonify(blogs)
