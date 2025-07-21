@@ -3,3 +3,5 @@ flask_cors
 jsonify
 json
 Gunicorn
+gspread
+google-auth
