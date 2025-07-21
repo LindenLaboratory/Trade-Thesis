@@ -35,6 +35,42 @@ def get_sheet():
   #PREREQS
 blogs=get_sheet()
   #FLASK
+@app.route('/')
+def main():
+  return """/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trade Thesis API</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #fff;
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #336699;
+    }
+    .message {
+      font-size: 1.5em;
+    }
+    .highlight {
+      font-weight: bold;
+      color: #004e92;
+    }
+  </style>
+</head>
+<body>
+  <div class="message">
+    <span class="highlight">Trade Thesis</span> API Online
+  </div>
+</body>
+</html>
+  """
 @app.route('/blog')
 def get_blogs():
   return jsonify(blogs)
