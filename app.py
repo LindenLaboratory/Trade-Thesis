@@ -10,6 +10,7 @@ CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
 
 #FUNCTIONS
+timestamp = lambda date: "-".join(reversed(date.split("/")))
 def get_sheet():
   blogs=[]
   df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv")
@@ -24,7 +25,7 @@ def get_sheet():
     blogs.append({
       "name":i["Post Name"],
       "description":i["Post Description"],
-      "published":i["Timestamp"],
+      "published":timestamp(i["Timestamp"]),
       "url":i["Upload Post"],
       "username":username
     })
