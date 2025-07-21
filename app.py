@@ -1,80 +1,15 @@
 #IMPORTS
 from flask import Flask, jsonify
 from flask_cors import CORS
+import json
 
 #SETUP
 app = Flask(__name__)
 CORS(app)
-blogs = [
-  {
-    "name": "How to Read Markets",
-    "description": "Understanding the basics of market movement.",
-    "published": "2025-07-18",
-    "url": "https://example.com/read-markets"
-  },
-  {
-    "name": "Risk Management 101",
-    "description": "Beginner strategies for managing trading risk.",
-    "published": "2025-07-12",
-    "url": "https://example.com/risk-management"
-  },
-  {
-    "name": "Technical Analysis Simplified",
-    "description": "Learn how to read charts and spot patterns.",
-    "published": "2025-07-05",
-    "url": "https://example.com/technical-analysis"
-  },
-  {
-    "name": "Top 5 Trading Indicators",
-    "description": "Which indicators are worth your attention?",
-    "published": "2025-06-30",
-    "url": "https://example.com/trading-indicators"
-  },
-  {
-    "name": "Psychology of Trading",
-    "description": "How to manage emotions during trades.",
-    "published": "2025-06-25",
-    "url": "https://example.com/trading-psychology"
-  },
-  {
-    "name": "Creating a Trading Journal",
-    "description": "Why documenting your trades leads to improvement.",
-    "published": "2025-06-20",
-    "url": "https://example.com/trading-journal"
-  },
-  {
-    "name": "Understanding Candlestick Patterns",
-    "description": "A deep dive into common price action signals.",
-    "published": "2025-06-15",
-    "url": "https://example.com/candlestick-patterns"
-  },
-  {
-    "name": "Intro to Forex Trading",
-    "description": "A guide to currency markets for beginners.",
-    "published": "2025-06-10",
-    "url": "https://example.com/forex-intro"
-  },
-  {
-    "name": "Common Trading Mistakes",
-    "description": "Avoid these traps early traders fall into.",
-    "published": "2025-06-01",
-    "url": "https://example.com/trading-mistakes"
-  },
-  {
-    "name": "The Role of News in Trading",
-    "description": "How economic events affect market movement.",
-    "published": "2025-05-25",
-    "url": "https://example.com/news-impact"
-  },
-  {
-    "name": "Building a Backtested Strategy",
-    "description": "Why backtesting matters and how to start.",
-    "published": "2025-05-20",
-    "url": "https://example.com/backtesting-strategy"
-  }
-]
 
 #FUNCTIONS
 @app.route('/blog')
 def get_blogs():
-    return jsonify(blogs)
+  with open("posts.json") as f:
+    blogs=json.load(f)
+  return jsonify(blogs)
