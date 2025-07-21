@@ -37,7 +37,7 @@ blogs=get_sheet()
   #FLASK
 @app.route('/')
 def main():
-  return """/
+  return """
 <!DOCTYPE html>
 <html lang="en">
 <head>
