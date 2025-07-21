@@ -84,5 +84,5 @@ def get_sheet():
   
 @app.route('/blog')
 def get_blogs():
-  get_sheet()
+  blogs = get_sheet()
   return jsonify(blogs)
