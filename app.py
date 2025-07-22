@@ -74,3 +74,7 @@ def main():
 @app.route('/blog')
 def get_blogs():
   return jsonify(blogs)
+@app.route('/featured')
+def featured():
+  with open("data.txt") as f:
+    return f.readlines()[0].strip()
