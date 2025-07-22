@@ -33,7 +33,7 @@ def get_sheet():
 
 #MAINLOOP
   #PREREQS
-blogs=get_sheet()
+print("System Online")
   #FLASK
 @app.route('/')
 def main():
@@ -73,7 +73,7 @@ def main():
   """
 @app.route('/blog')
 def get_blogs():
-  return jsonify(blogs)
+  return jsonify(get_sheet())
 @app.route('/featured')
 def featured():
   with open("data.txt") as f:
