@@ -12,9 +12,9 @@ blogs=[]
 
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
-def get_sheet():
+def get_sheet(GID):
   blogs=[]
-  df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv")
+  df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}")
   userdict={}
   for index,i in df.iterrows():
     email=i["Email address"]
@@ -22,7 +22,8 @@ def get_sheet():
       _=i["Username"]
       userdict[email]=_
       username=_
-    username=userdict[email]
+    else:
+      username=userdict[email]
     blogs.append({
       "name":i["Post Name"],
       "description":i["Post Description"],
@@ -34,7 +35,7 @@ def get_sheet():
 
 #MAINLOOP
   #PREREQS
-blogs=get_sheet()
+blogs=get_sheet("2132377156")
   #FLASK
 @app.route('/')
 def main():
@@ -75,7 +76,7 @@ def main():
 @app.route('/blog')
 def get_blogs():
   global blogs
-  blogs=get_sheet()
+  blogs=get_sheet("2132377156")
   return jsonify(blogs)
 @app.route('/featured')
 def featured():
@@ -83,10 +84,15 @@ def featured():
     return f.readlines()[0].strip()
 @app.route('/user/<string:name>')
 def user_data(name):
-  num_posts=0
+  num_posts,date=0,""
   for i in blogs:
     if i['username']==name:
       num_posts+=1
+  _=get_sheet("")
+  for j in _:
+    if j['username']==name:
+      date=j["published"]
+      break
   return f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -116,8 +122,9 @@ def user_data(name):
 </head>
 <body>
   <div class="message">
-    <h1>User <span class="highlight">{name}</span></h1>
+    <h3>User <span class="highlight">{name}</span></h1>
     <p><b># Posts</b> {num_posts}</p>
+    <p><b>Joined Site</b> {date}</p>
   </div>
 </body>
 </html>
