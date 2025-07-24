@@ -28,7 +28,7 @@ def get_sheet(GID):
       "name":i["Post Name"],
       "description":i["Post Description"],
       "published":timestamp(i["Timestamp"]),
-      "url":i["Upload Post"],
+      "url":i["Upload Post (.md)"],
       "username":username
     })
   return blogs
