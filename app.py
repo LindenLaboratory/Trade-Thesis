@@ -140,7 +140,7 @@ def simulation():
     r = requests.get(durl)
     r.raise_for_status()
     splittxt=re.split(r'##(?!#)', r.text)
-    test=[re.findall(r':\*\*\s*([^:]+)', splittxt[2]),splittxt[3].replace("Mainloop\n ","")]
+    test=[re.findall(r':\*\*\s*([^:]+)', splittxt[3]),splittxt[4].replace("Mainloop\n ","")]
     return test
   return [get_vars(i) for i in blogs]
     
