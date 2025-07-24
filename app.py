@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 import json
 import pandas as pd
+import requests
 
 #SETUP
 app = Flask(__name__)
@@ -129,3 +130,16 @@ def user_data(name):
 </body>
 </html>
   """
+@app.route('/simulation')
+def simulation():
+  blogs=get_sheet("2132377156")
+  def get_vars(blog):
+    id=blog["url"].split("id=")[1]
+    durl=f"https://drive.google.com/uc?export=download&id={file_id}"
+    r = requests.get(durl)
+    r.raise_for_status()
+    txt=r.text
+    vars = re.findall(r':\*\*\s*([^:]+)', txt.split("## ")[1]):
+  return [get_vars(i) for i in blogs]
+    
+      
