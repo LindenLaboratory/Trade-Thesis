@@ -135,7 +135,7 @@ def simulation():
   blogs=get_sheet("2132377156")
   def get_vars(blog):
     id=blog["url"].split("id=")[1]
-    durl=f"https://drive.google.com/uc?export=download&id={file_id}"
+    durl=f"https://drive.google.com/uc?export=download&id={id}"
     r = requests.get(durl)
     r.raise_for_status()
     splittxt=(r.text).split("## ")
