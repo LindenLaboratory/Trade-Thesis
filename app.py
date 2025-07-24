@@ -141,7 +141,7 @@ def simulation():
     r.raise_for_status()
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
-    matches = re.findall(r'\*\*(.+?):\*\*(.*)', text)
+    matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
     return ([{k.strip():v.strip()} for k, v in matches],parts[2])
   return [get_vars(i) for i in blogs]
     
