@@ -141,6 +141,7 @@ def simulation():
     r.raise_for_status()
     splittxt=re.split(r'##(?!#)', r.text)
     test=[re.findall(r':\*\*\s*([^:]+)', splittxt[3]),splittxt[4].replace("Mainloop\n ","")]
+    print(test)
     return test
   return [get_vars(i) for i in blogs]
     
