@@ -90,7 +90,6 @@ def user_data(name):
       num_posts+=1
   _=get_sheet("519464524")
   for j in _:
-    print(j)
     if j['username']==name:
       date=j["published"]
       break
