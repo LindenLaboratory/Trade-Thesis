@@ -138,8 +138,8 @@ def simulation():
     durl=f"https://drive.google.com/uc?export=download&id={file_id}"
     r = requests.get(durl)
     r.raise_for_status()
-    txt=r.text
-    vars = re.findall(r':\*\*\s*([^:]+)', txt.split("## ")[1]):
+    splittxt=(r.text).split("## ")
+    return [re.findall(r':\*\*\s*([^:]+)', splittxt[1]),splittxt[2].split("Mainloop  \n")[1]]
   return [get_vars(i) for i in blogs]
     
       
