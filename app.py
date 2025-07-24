@@ -143,7 +143,7 @@ def simulation():
     print(r.text)#REMOVE
     splittxt=(r.text).split("## ")
     print(splittxt)#REMOVE
-    return [re.findall(r':\*\*\s*([^:]+)', splittxt[1]),splittxt[2].split("Mainloop  \n")[1]]
+    return [re.findall(r':\*\*\s*([^:]+)', splittxt[1]),splittxt[2].split("Mainloop\n")[1]]
   return [get_vars(i) for i in blogs]
     
       
