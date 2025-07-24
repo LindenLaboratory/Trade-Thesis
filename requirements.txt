@@ -3,5 +3,5 @@ flask_cors
 jsonify
 Gunicorn
 pandas
-request
+requests
 re
