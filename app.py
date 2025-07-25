@@ -34,6 +34,10 @@ def get_sheet(GID):
       "username":username
     })
   return blogs
+def backtest(period):
+  pass
+def simulate(type,timeframe,code):
+  pass
 
 #MAINLOOP
   #PREREQS
@@ -131,10 +135,10 @@ def user_data(name):
 </body>
 </html>
   """
-@app.route('/simulation')
-def simulation():
+@app.route('/tools')
+def tools():
   blogs=get_sheet("2132377156")
-  def get_vars(blog):
+  def get_data(blog):
     id=blog["url"].split("id=")[1]
     durl=f"https://drive.google.com/uc?export=download&id={id}"
     r = requests.get(durl)
@@ -142,7 +146,19 @@ def simulation():
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
-    return ([{k.strip():v.strip()} for k, v in matches],parts[2])
-  return [get_vars(i) for i in blogs]
+    return ({k.strip():v.strip() for k, v in matches},parts[2])
+  result_codes=[]
+  for i in blogs:
+    vars,code = get_data(i)
+    codea,codeb=200,200
+    if vars["Backtest Result"] == "":
+      codea=backtest(vars["Period"])
+    if vars["Result"] == "":
+      codeb=simulate(vars["Type"],vars["Timeframe"],code)
+    result_codes.append((codea,codeb))
+  return result_codes
+    
+      
+    
     
       
