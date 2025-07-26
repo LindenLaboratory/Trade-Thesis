@@ -43,7 +43,7 @@ def get_sheet(GID):
   return blogs
 def backtest(period):
   pass
-def simulate(type,timeframe,code):
+def simulate(username,timeframe,code):
   class Security:
     def BUY():
       pass
@@ -175,7 +175,7 @@ def tools():
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
-      codeb=simulate(vars["Type"],vars["Timeframe"],code)
+      codeb=simulate(i["username"],vars["Timeframe"],code)
     result_codes.append((codea,codeb))
   return result_codes
       
