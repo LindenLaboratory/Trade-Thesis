@@ -129,7 +129,8 @@ if True:
   else:
     save("buyside","True")
     save("TIME",0)
-  try:
+  #try:
+  if True:
     timea,timeb = timeframe.split("-")
     if timea < timeb:
       vardict["TIME"] += 1 #should ensure once per day
@@ -141,8 +142,8 @@ if True:
       if not isinstance(j, (FunctionType, type)):
         save(i,j)
     return 300
-  except Exception as e:
-    return str(e)
+  #except Exception as e:
+    #return str(e)
 
 #MAINLOOP
   #PREREQS
