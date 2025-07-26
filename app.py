@@ -41,7 +41,7 @@ def get_sheet(GID):
       "username":username
     })
   return blogs
-def backtest(period):
+def backtest(period,code):
   pass
 def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
