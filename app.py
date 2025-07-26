@@ -159,13 +159,15 @@ def tools():
     vars,code = get_data(i)
     print(vars) #DEBUGGING
     codea,codeb=200,200
+    if code == "N/A":
+      codea,codeb=404,404
+      continue
     if vars["Backtest Result"] == "":
-      codea=backtest(vars["Period"])
+      codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
       codeb=simulate(vars["Type"],vars["Timeframe"],code)
     result_codes.append((codea,codeb))
   return result_codes
-    
       
     
     
