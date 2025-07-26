@@ -44,17 +44,105 @@ def get_sheet(GID):
 def backtest(period):
   pass
 def simulate(username,timeframe,code):
+  code = code.replace("THEN", "THEN()")
+  buyside_,sellside_=code.split("-./")
+  def save(varname,value):
+    with open("variables.json") as f:
+      vars_ = json.load(f)
+    vars_.setdefault(username, {})[varname] = value
+    with open("variables.json", "w") as f:
+      json.dump(vars_, f)
+  def fetch(varname="ALL"):
+    with open("variables.json", "r") as f:
+      vars = json.load(f)
+      try:
+        if varname == "ALL":
+          return vars[username]
+        return vars[username][varname]
+      except:
+        return None
+  prereqs = """
+if True:
+  def GET(url):
+    return requests.get(url)
+  def RETURN(id):
+    pass
+  def CLOSE(id):
+    url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
+    requests.get(url, headers=headers)
+  def THEN():
+    global buyside
+    buyside = ("False" if buyside=="True" else "True")
   class Security:
-    def BUY():
-      pass
-    def SELL():
-      pass
-    def PRICE(date=0):
-      pass
-    def TECHNICAL(type, date=0):
+    def __init__(self, ticker, qty=100,**kwargs):
+      self.ticker=ticker
+      self.quantity=qty
+    def ORDER(self,bs="buy"):
+      url = "https://paper-api.alpaca.markets/v2/orders"
+      data = {
+        "type": "market",
+        "time_in_force": "day",
+        "symbol": self.ticker,
+        "qty": self.quantity,
+        "side": bs
+      }
+      requests.post(url, headers=headers, json=data)
+      return self.ticker
+    def PRICE(self, date=0):
+      if date == 0:
+          url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/trades/latest"
+          return requests.get(url, headers=headers).json()["trade"]["p"]
+      elif date < 0:
+          target_date = datetime.utcnow() + timedelta(days=date)
+          start = target_date.strftime('%Y-%m-%dT00:00:00Z')
+          end = target_date.strftime('%Y-%m-%dT23:59:59Z')
+          url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/bars"
+          params = {
+              "start": start,
+              "end": end,
+              "timeframe": "1Day"
+          }
+          return requests.get(url, headers=headers, params=params).json()["bars"][0]["c"]
+      else:
+          return "Input Error: Negative date value required"
+    def TECHNICAL(self, type, date=0):
       pass
   class Option(Security):
-    pass
+    def __init__(self, ticker, strike, qty=1, type="call", dte=30):
+      super().__init__(ticker, qty)
+      url = "https://paper-api.alpaca.markets/v2/options/contracts"
+      params = {
+          "underlying_symbols": ticker,
+          "expiration_date_gte": (datetime.now() + timedelta(days=dte)).strftime("%Y-%m-%d"),
+          "type": type,
+          "strike_price_gte": strike
+      }
+      self.ticker=requests.get(url, headers=headers, params=params).json()["option_contracts"][0]["symbol"]
+    def PRICE(self):
+      url = f"https://paper-api.alpaca.markets/v2/options/contracts/{self.ticker}"
+      return requests.get(url, headers=headers)["close_price"]
+  """
+  vars,varstr = fetch(),""
+  vardict = {}
+  if vars:
+    varstr="\n".join([f"{i}='{j}'" for i,j in vars.items()])+"\n"
+  else:
+    save("buyside","True")
+    save("TIME",0)
+  try:
+    timea,timeb = timeframe.split("-")
+    if timea < timeb:
+      vardict["TIME"] += 1
+    else:
+      return 100
+    exec(prereqs+varstr+(buyside_ if fetch("buyside")=="True" else sellside_), globals(), vardict)
+    vardict["buyside"] = globals().get("buyside")
+    for i,j in vardict.items():
+      if not isinstance(j, (FunctionType, type)):
+        save(i,j)
+    return 300
+  except Exception as e:
+    return e
 
 #MAINLOOP
   #PREREQS
