@@ -142,7 +142,7 @@ if True:
         save(i,j)
     return 300
   except Exception as e:
-    return e
+    return str(e)
 
 #MAINLOOP
   #PREREQS
