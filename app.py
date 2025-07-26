@@ -37,12 +37,15 @@ def get_sheet(GID):
 def backtest(period):
   pass
 def simulate(type,timeframe,code):
-  def PRICE(ticker, date=0):
-    pass
-  def TECHNICAL(type, ticker, date=0):
-    pass
   class Security:
-    pass
+    def BUY():
+      pass
+    def SELL():
+      pass
+    def PRICE(date=0):
+      pass
+    def TECHNICAL(type, date=0):
+      pass
   class Option(Security):
     pass
 
@@ -157,7 +160,7 @@ def tools():
   result_codes=[]
   for i in blogs:
     vars,code = get_data(i)
-    print(vars) #DEBUGGING
+    code = code.replace("&nbsp;"," ")
     codea,codeb=200,200
     if code == "N/A":
       codea,codeb=404,404
