@@ -5,6 +5,13 @@ import json
 import pandas as pd
 import requests
 import re
+import requests
+from datetime import datetime, timedelta
+headers = {
+    "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
+    "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
+    "accept": "application/json"
+}
 
 #SETUP
 app = Flask(__name__)
