@@ -150,6 +150,7 @@ def tools():
   result_codes=[]
   for i in blogs:
     vars,code = get_data(i)
+    print(vars) #DEBUGGING
     codea,codeb=200,200
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"])
