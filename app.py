@@ -37,7 +37,14 @@ def get_sheet(GID):
 def backtest(period):
   pass
 def simulate(type,timeframe,code):
-  pass
+  def PRICE(ticker, date=0):
+    pass
+  def TECHNICAL(type, ticker, date=0):
+    pass
+  class Security:
+    pass
+  class Option(Security):
+    pass
 
 #MAINLOOP
   #PREREQS
