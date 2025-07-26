@@ -5,8 +5,8 @@ import json
 import pandas as pd
 import requests
 import re
-import requests
 from datetime import datetime, timedelta
+from types import FunctionType
 headers = {
     "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
     "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
@@ -132,7 +132,7 @@ if True:
   try:
     timea,timeb = timeframe.split("-")
     if timea < timeb:
-      vardict["TIME"] += 1
+      vardict["TIME"] += 1 #should ensure once per day
     else:
       return 100
     exec(prereqs+varstr+(buyside_ if fetch("buyside")=="True" else sellside_), globals(), vardict)
