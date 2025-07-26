@@ -131,11 +131,14 @@ if True:
     save("TIME",0)
   #try:
   if True:
-    timea,timeb = timeframe.split("-")
-    if timea < timeb:
-      vardict["TIME"] += 1 #should ensure once per day
-    else:
-      return 100
+    timea,timeb = timeframe.split("/")
+    try:    
+        if timea < timeb:
+          vardict["TIME"] += 1 #should ensure once per day
+        else:
+          return 100
+    except:
+        vardict["TIME"] = 1 #...
     exec(prereqs+varstr+(buyside_ if fetch("buyside")=="True" else sellside_), globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
     for i,j in vardict.items():
