@@ -133,13 +133,13 @@ if True:
   else:
     save("buyside",True)
     save("update",{"TIME":0,"RETURN":0,"POSITIONS":[]})
-    save("date",date.today())
+    save("date",str(date.today()))
   try:
     timea,timeb = timeframe.split("/")
-    if fetch("date") != date.today():
+    if fetch("date") != str(date.today()):
         if timea < timeb:
             vardict["update"]["TIME"] += 1
-            save("date",date.today())
+            save("date",str(date.today()))
         else:
             return 100
     exec(prereqs+varstr+(buyside_ if fetch("buyside") else sellside_), globals(), vardict)
