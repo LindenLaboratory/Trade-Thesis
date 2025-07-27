@@ -21,6 +21,8 @@ blogs=[]
 
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
+def update(resa,resb):
+    pass
 def get_sheet(GID):
   blogs=[]
   df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}")
@@ -143,8 +145,7 @@ if True:
     save("date",str(date.today()))
     vars = fetch()
   varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
-  #try:
-  if True:
+  try:
     timea,timeb = timeframe.split("/")
     if fetch("date") != str(date.today()):
       if timea < timeb:
@@ -173,8 +174,8 @@ if True:
       elif not isinstance(j, (FunctionType, type)):
         save(i,j)
     return 300,fetch("update")
-  #except Exception as e:
-  #  return str(e)
+  except Exception as e:
+    return str(e)
 
 #MAINLOOP
   #PREREQS
@@ -296,6 +297,8 @@ def tools():
       codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
       codeb=simulate(i["username"],vars["Timeframe"],code)
+    if codea==300 and codeb==300:
+      upload(codea[1],codeb[1])
     result_codes.append((codea,codeb))
   return result_codes
       
