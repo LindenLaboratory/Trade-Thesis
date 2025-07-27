@@ -286,7 +286,7 @@ def tools():
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
-        print(code)
+      print(code)
       codeb=simulate(i["username"],vars["Timeframe"],code)
     result_codes.append((codea,codeb))
   return result_codes
