@@ -278,7 +278,7 @@ def tools():
   result_codes=[]
   for i in blogs:
     vars,code = get_data(i)
-    code = code.replace("&nbsp;&nbsp;","\t")
+    code = code.replace("&nbsp;&nbsp;","  ")
     codea,codeb=200,200
     if code == "N/A":
       codea,codeb=404,404
