@@ -94,8 +94,8 @@ if True:
             return self.ticker
         def PRICE(self, date=0):
             if date == 0:
-              url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/trades/latest"
-              return requests.get(url, headers=headers).json()["trade"]["p"]
+                url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/trades/latest"
+                return requests.get(url, headers=headers).json()["trade"]["p"]
             elif date < 0:
                 target_date = datetime.utcnow() + timedelta(days=date)
                 start = target_date.strftime('%Y-%m-%dT00:00:00Z')
@@ -106,7 +106,9 @@ if True:
                   "end": end,
                   "timeframe": "1Day"
                 }
-                return requests.get(url, headers=headers, params=params).json()["bars"][0]["c"]
+                pricedata = requests.get(url, headers=headers, params=params).json()
+                print(pricedata)
+                return pricedata["bars"][0]["c"]
             else:
                 return "Input Error: Negative date value required"
         def TECHNICAL(self, type, date=0):
@@ -279,7 +281,7 @@ def tools():
   result_codes=[]
   for i in blogs:
     vars,code = get_data(i)
-    code=code.replace("&nbsp;","\t")
+    code=code.replace("&nbsp;&nbsp;","\t")
     codea,codeb=200,200
     if code == "N/A":
       codea,codeb=404,404
