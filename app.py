@@ -136,7 +136,7 @@ if True:
     save("date",date.today())
   try:
     timea,timeb = timeframe.split("/")
-    if fetch("date") != date.today()
+    if fetch("date") != date.today():
         if timea < timeb:
             vardict["update"]["TIME"] += 1
             save("date",date.today())
