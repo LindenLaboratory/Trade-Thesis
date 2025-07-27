@@ -97,18 +97,24 @@ if True:
                 url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/trades/latest"
                 return requests.get(url, headers=headers).json()["trade"]["p"]
             elif date < 0:
-                target_date = datetime.utcnow() + timedelta(days=date)
-                start = target_date.strftime('%Y-%m-%dT00:00:00Z')
-                end = target_date.strftime('%Y-%m-%dT23:59:59Z')
-                url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/bars"
-                params = {
-                  "start": start,
-                  "end": end,
-                  "timeframe": "1Day"
-                }
-                pricedata = requests.get(url, headers=headers, params=params).json()
-                print(pricedata)
-                return pricedata["bars"][0]["c"]
+                attempts = 5
+                while attempts > 0:
+                    target_date = datetime.utcnow() + timedelta(days=date)
+                    start = target_date.strftime('%Y-%m-%dT00:00:00Z')
+                    end = target_date.strftime('%Y-%m-%dT23:59:59Z')
+                    url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/bars"
+                    params = {
+                      "start": start,
+                      "end": end,
+                      "timeframe": "1Day"
+                    }
+                    response = requests.get(url, headers=headers, params=params).json()
+                    bars = response.get("bars")
+                    if bars:
+                        return bars[0]["c"]
+                    date -= 1
+                    attempts -= 1
+                return "No data found in fallback range"
             else:
                 return "Input Error: Negative date value required"
         def TECHNICAL(self, type, date=0):
