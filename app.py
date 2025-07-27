@@ -142,7 +142,7 @@ if True:
     save("update",{"TIME":0,"RETURN":0,"POSITIONS":[]})
     save("date",str(date.today()))
     vars = fetch()
-  varstr="\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
+  varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
   #try:
   if True:
     timea,timeb = timeframe.split("/")
