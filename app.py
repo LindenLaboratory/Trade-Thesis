@@ -5,7 +5,7 @@ import json
 import pandas as pd
 import requests
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from types import FunctionType
 headers = {
     "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
@@ -62,17 +62,19 @@ def simulate(username,timeframe,code):
       except:
         return None
   prereqs = """
+POSITIONS = []
 if True:
   def GET(url):
     return requests.get(url)
   def RETURN(id):
-    pass
+    url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
+    return requests.get(url, headers=headers)["unrealized_plpc"]
   def CLOSE(id):
     url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
-    requests.get(url, headers=headers)
+    requests.delete(url, headers=headers)
   def THEN():
-    global buyside
-    buyside = ("False" if buyside=="True" else "True")
+    global buyside, POSITIONS
+    buyside = (False if buyside else True)
   class Security:
     def __init__(self, ticker, qty=100,**kwargs):
       self.ticker=ticker
@@ -87,6 +89,8 @@ if True:
         "side": bs
       }
       requests.post(url, headers=headers, json=data)
+      if not self.ticker in POSITIONS:
+          POSITIONS.append(self.ticker)
       return self.ticker
     def PRICE(self, date=0):
       if date == 0:
@@ -125,28 +129,40 @@ if True:
   vars,varstr = fetch(),""
   vardict = {}
   if vars:
-    varstr="\n".join([f"{i}='{j}'" for i,j in vars.items()])+"\n"
+    varstr="\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
   else:
-    save("buyside","True")
-    save("TIME",0)
-  #try:
-  if True:
+    save("buyside",True)
+    save("update",{"TIME":0,"RETURN":0,"POSITIONS":[]})
+    save("date",date.today())
+  try:
     timea,timeb = timeframe.split("/")
-    try:    
+    if fetch("date") != date.today()
         if timea < timeb:
-          vardict["TIME"] += 1 #should ensure once per day
+            vardict["update"]["TIME"] += 1
+            save("date",date.today())
         else:
-          return 100
-    except:
-        vardict["TIME"] = 1 #...
-    exec(prereqs+varstr+(buyside_ if fetch("buyside")=="True" else sellside_), globals(), vardict)
+            return 100
+    exec(prereqs+varstr+(buyside_ if fetch("buyside") else sellside_), globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
     for i,j in vardict.items():
-      if not isinstance(j, (FunctionType, type)):
+      if i=="POSITIONS":
+        pos=fetch("update")["POSITIONS"]
+        for k in j:
+          if k not in pos:
+            pos.append(k)
+        def RETURN(id):
+          url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
+          return requests.get(url, headers=headers)["unrealized_plpc"]
+        avg = lambda lst: sum(lst)/len(lst)
+        return_=avg([float(RETURN(position)) for position in pos])
+        save("update",{"TIME":vardict["update"]["time"],"RETURN":return_,"POSITIONS":pos})
+      elif i=="TIME":
+        pass
+      elif not isinstance(j, (FunctionType, type)):
         save(i,j)
-    return 300
-  #except Exception as e:
-    #return str(e)
+    return 300,fetch("update")
+  except Exception as e:
+    return str(e)
 
 #MAINLOOP
   #PREREQS
