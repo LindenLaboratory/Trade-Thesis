@@ -64,67 +64,67 @@ def simulate(username,timeframe,code):
   prereqs = """
 POSITIONS = []
 if True:
-  def GET(url):
-    return requests.get(url)
-  def RETURN(id):
-    url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
-    return requests.get(url, headers=headers)["unrealized_plpc"]
-  def CLOSE(id):
-    url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
-    requests.delete(url, headers=headers)
-  def THEN():
-    global buyside, POSITIONS
-    buyside = (False if buyside else True)
-  class Security:
-    def __init__(self, ticker, qty=100,**kwargs):
-      self.ticker=ticker
-      self.quantity=qty
-    def ORDER(self,bs="buy"):
-      url = "https://paper-api.alpaca.markets/v2/orders"
-      data = {
-        "type": "market",
-        "time_in_force": "day",
-        "symbol": self.ticker,
-        "qty": self.quantity,
-        "side": bs
-      }
-      requests.post(url, headers=headers, json=data)
-      if not self.ticker in POSITIONS:
-          POSITIONS.append(self.ticker)
-      return self.ticker
-    def PRICE(self, date=0):
-      if date == 0:
-          url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/trades/latest"
-          return requests.get(url, headers=headers).json()["trade"]["p"]
-      elif date < 0:
-          target_date = datetime.utcnow() + timedelta(days=date)
-          start = target_date.strftime('%Y-%m-%dT00:00:00Z')
-          end = target_date.strftime('%Y-%m-%dT23:59:59Z')
-          url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/bars"
-          params = {
-              "start": start,
-              "end": end,
-              "timeframe": "1Day"
-          }
-          return requests.get(url, headers=headers, params=params).json()["bars"][0]["c"]
-      else:
-          return "Input Error: Negative date value required"
-    def TECHNICAL(self, type, date=0):
-      pass
-  class Option(Security):
-    def __init__(self, ticker, strike, qty=1, type="call", dte=30):
-      super().__init__(ticker, qty)
-      url = "https://paper-api.alpaca.markets/v2/options/contracts"
-      params = {
-          "underlying_symbols": ticker,
-          "expiration_date_gte": (datetime.now() + timedelta(days=dte)).strftime("%Y-%m-%d"),
-          "type": type,
-          "strike_price_gte": strike
-      }
-      self.ticker=requests.get(url, headers=headers, params=params).json()["option_contracts"][0]["symbol"]
-    def PRICE(self):
-      url = f"https://paper-api.alpaca.markets/v2/options/contracts/{self.ticker}"
-      return requests.get(url, headers=headers)["close_price"]
+    def GET(url):
+        return requests.get(url)
+    def RETURN(id):
+        url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
+        return requests.get(url, headers=headers)["unrealized_plpc"]
+    def CLOSE(id):
+        url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
+        requests.delete(url, headers=headers)
+    def THEN():
+        global buyside, POSITIONS
+        buyside = (False if buyside else True)
+    class Security:
+        def __init__(self, ticker, qty=100,**kwargs):
+            self.ticker=ticker
+            self.quantity=qty
+        def ORDER(self,bs="buy"):
+            url = "https://paper-api.alpaca.markets/v2/orders"
+            data = {
+              "type": "market",
+              "time_in_force": "day",
+              "symbol": self.ticker,
+              "qty": self.quantity,
+              "side": bs
+            }
+            requests.post(url, headers=headers, json=data)
+            if not self.ticker in POSITIONS:
+                POSITIONS.append(self.ticker)
+            return self.ticker
+        def PRICE(self, date=0):
+            if date == 0:
+              url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/trades/latest"
+              return requests.get(url, headers=headers).json()["trade"]["p"]
+            elif date < 0:
+                target_date = datetime.utcnow() + timedelta(days=date)
+                start = target_date.strftime('%Y-%m-%dT00:00:00Z')
+                end = target_date.strftime('%Y-%m-%dT23:59:59Z')
+                url = f"https://data.alpaca.markets/v2/stocks/{self.ticker}/bars"
+                params = {
+                  "start": start,
+                  "end": end,
+                  "timeframe": "1Day"
+                }
+                return requests.get(url, headers=headers, params=params).json()["bars"][0]["c"]
+            else:
+                return "Input Error: Negative date value required"
+        def TECHNICAL(self, type, date=0):
+            pass
+    class Option(Security):
+        def __init__(self, ticker, strike, qty=1, type="call", dte=30):
+            super().__init__(ticker, qty)
+            url = "https://paper-api.alpaca.markets/v2/options/contracts"
+            params = {
+              "underlying_symbols": ticker,
+"expiration_date_gte": (datetime.now() + timedelta(days=dte)).strftime("%Y-%m-%d"),
+              "type": type,
+              "strike_price_gte": strike
+            }
+            self.ticker=requests.get(url, headers=headers, params=params).json()["option_contracts"][0]["symbol"]
+        def PRICE(self):
+            url = f"https://paper-api.alpaca.markets/v2/options/contracts/{self.ticker}"
+            return requests.get(url, headers=headers)["close_price"]
   """
   vars,varstr = fetch(),""
   vardict = {}
@@ -144,7 +144,6 @@ if True:
       else:
         return 100
     codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_)
-    codetotal = codetotal.replace("&nbsp;&nbsp;","  ")
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
@@ -279,6 +278,7 @@ def tools():
   result_codes=[]
   for i in blogs:
     vars,code = get_data(i)
+    code=code.replace("&nbsp;&nbsp;","\t")
     codea,codeb=200,200
     if code == "N/A":
       codea,codeb=404,404
@@ -286,7 +286,6 @@ def tools():
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
-      print(code)
       codeb=simulate(i["username"],vars["Timeframe"],code)
     result_codes.append((codea,codeb))
   return result_codes
