@@ -138,12 +138,14 @@ if True:
   if True:
     timea,timeb = timeframe.split("/")
     if fetch("date") != str(date.today()):
-        if timea < timeb:
-            vardict["update"]["TIME"] += 1
-            save("date",str(date.today()))
-        else:
-            return 100
-    exec(prereqs+varstr+(buyside_ if fetch("buyside") else sellside_), globals(), vardict)
+      if timea < timeb:
+        vardict["update"]["TIME"] += 1
+        save("date",str(date.today()))
+      else:
+        return 100
+    codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_), globals(), vardict
+    print(codetotal)
+    exec(codetotal)
     vardict["buyside"] = globals().get("buyside")
     for i,j in vardict.items():
       if i=="POSITIONS":
