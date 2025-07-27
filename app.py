@@ -134,7 +134,8 @@ if True:
     save("buyside",True)
     save("update",{"TIME":0,"RETURN":0,"POSITIONS":[]})
     save("date",str(date.today()))
-  try:
+  #try:
+  if True:
     timea,timeb = timeframe.split("/")
     if fetch("date") != str(date.today()):
         if timea < timeb:
@@ -161,8 +162,8 @@ if True:
       elif not isinstance(j, (FunctionType, type)):
         save(i,j)
     return 300,fetch("update")
-  except Exception as e:
-    return str(e)
+  #except Exception as e:
+  #  return str(e)
 
 #MAINLOOP
   #PREREQS
