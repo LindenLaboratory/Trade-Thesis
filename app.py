@@ -144,6 +144,7 @@ if True:
       else:
         return 100
     codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_)
+    codetotal = codetotal.replace("&nbsp;&nbsp;","  ")
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
@@ -278,7 +279,6 @@ def tools():
   result_codes=[]
   for i in blogs:
     vars,code = get_data(i)
-    code = code.replace("&nbsp;&nbsp;","  ")
     codea,codeb=200,200
     if code == "N/A":
       codea,codeb=404,404
