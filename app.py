@@ -125,8 +125,9 @@ if True:
         def PRICE(self):
             url = f"https://paper-api.alpaca.markets/v2/options/contracts/{self.ticker}"
             return requests.get(url, headers=headers)["close_price"]
+
   """
-  vars,varstr = fetch(),""
+  vars,varstr = fetch(),"\n"
   vardict = {}
   if vars:
     varstr="\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
@@ -143,7 +144,7 @@ if True:
         save("date",str(date.today()))
       else:
         return 100
-    codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_)
+    codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
