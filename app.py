@@ -143,9 +143,9 @@ if True:
         save("date",str(date.today()))
       else:
         return 100
-    codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_), globals(), vardict
+    codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_)
     print(codetotal)
-    exec(codetotal)
+    exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
     for i,j in vardict.items():
       if i=="POSITIONS":
