@@ -65,12 +65,12 @@ def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
   def save(varname,value):
-    f=git_read("Trade-Thesis","variables.json")
+    f=git_read("Trade-Thesis","LindenLaboratory/variables.json")
     vars_=json.loads(f)
     vars_.setdefault(username, {})[varname] = value
-    f=git_write("Trade-Thesis","variables.json",json.dumps(vars_),"Updated variables file")
+    f=git_write("Trade-Thesis","LindenLaboratory/variables.json",json.dumps(vars_),"Updated variables file")
   def fetch(varname="ALL"):
-    f=git_read("Trade-Thesis","variables.json")
+    f=git_read("Trade-Thesis","LindenLaboratory/variables.json")
     vars = json.loads(f)
     try:
       if varname == "ALL":
