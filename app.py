@@ -13,7 +13,7 @@ from github import Github
 app = Flask(__name__)
 CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
-GIT_TOKEN="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"
+GIT_TOKEN="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"
 headers = {
     "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
     "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
