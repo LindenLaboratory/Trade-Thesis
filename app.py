@@ -165,10 +165,16 @@ if True:
             pos.append(k)
         def RETURN(id):
           url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
-          return requests.get(url, headers=headers)["unrealized_plpc"]
-        avg = lambda lst: sum(lst)/len(lst)
-        return_=avg([float(RETURN(position)) for position in pos])
-        save("update",{"TIME":vardict["update"]["time"],"RETURN":return_,"POSITIONS":pos})
+          position=requests.get(url, headers=headers)["unrealized_plpc"]
+          return__=position["unrealized_plpc"]
+          size__=position["market_value"]
+          return return__,size__
+        avg,total,pos_ = lambda lst,total: sum(lst)/len(lst)/total,0,[]
+        for position in pos:
+          return_,size_=RETURN(position)
+          total+=size_
+          pos_.append(return_*size_)
+        save("update",{"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos})
       elif i=="TIME":
         pass
       elif not isinstance(j, (FunctionType, type)):
