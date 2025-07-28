@@ -7,20 +7,31 @@ import requests
 import re
 from datetime import datetime, timedelta, date
 from types import FunctionType
-headers = {
-    "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
-    "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
-    "accept": "application/json"
-}
 
 #SETUP
 app = Flask(__name__)
 CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
+GIT_TOKEN="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"
+headers = {
+    "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
+    "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
+    "accept": "application/json"
+}
 blogs=[]
 
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
+def git_read(repo_name, file_path):
+    g = Github(GIT_TOKEN)
+    repo = g.get_repo(repo_name)
+    file = repo.get_contents(file_path)
+    return file.decoded_content.decode()
+def git_write(repo_name, file_path, new_content, commit_msg="Update via web server"):
+    g = Github(GIT_TOKEN)
+    repo = g.get_repo(repo_name)
+    file = repo.get_contents(file_path)
+    repo.update_file(file.path, commit_msg, new_content, file.sha)
 def update(resa,resb):
     pass
 def get_sheet(GID):
@@ -49,20 +60,19 @@ def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
   def save(varname,value):
-    with open("variables.json") as f:
-      vars_ = json.load(f)
+    f=git_read("Trade-Thesis","variables.json")
+    vars_=json.loads(f)
     vars_.setdefault(username, {})[varname] = value
-    with open("variables.json", "w") as f:
-      json.dump(vars_, f)
+    f=git_write("Trade-Thesis","variables.json",json.dumps(vars_),"Updated variables file")
   def fetch(varname="ALL"):
-    with open("variables.json", "r") as f:
-      vars = json.load(f)
-      try:
-        if varname == "ALL":
-          return vars[username]
-        return vars[username][varname]
-      except:
-        return None
+    f=git_read("Trade-Thesis","variables.json")
+    vars = json.loads(f)
+    try:
+      if varname == "ALL":
+        return vars[username]
+      return vars[username][varname]
+    except:
+      return None
   prereqs = """
 POSITIONS = []
 if True:
