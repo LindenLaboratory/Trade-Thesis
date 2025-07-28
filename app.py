@@ -13,7 +13,7 @@ from github import Github
 app = Flask(__name__)
 CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
-GIT_TOKEN="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"
+"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"
 headers = {
     "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
     "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
@@ -24,10 +24,14 @@ blogs=[]
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
 def git_read(repo_name, file_path):
-    g = Github(GIT_TOKEN)
-    repo = g.get_repo(repo_name)
-    file = repo.get_contents(file_path)
-    return file.decoded_content.decode()
+  g = Github(GIT_TOKEN)
+  try:
+      repo = g.get_repo(repo_name)
+      file = repo.get_contents(file_path)
+      print(file)
+      return file.decoded_content.decode()
+  except Exception as e:
+      raise Exception("Error reading file: {e}")
 def git_write(repo_name, file_path, new_content, commit_msg="Update via web server"):
     g = Github(GIT_TOKEN)
     repo = g.get_repo(repo_name)
