@@ -113,7 +113,9 @@ if True:
                     response = requests.get(url, headers=headers, params=params).json()
                     bars = response.get("bars")
                     if bars:
-                        return bars[0]["c"]
+                        clp = bars[0]["c"]
+                        print(clp,start,end)
+                        return clp
                     date -= 1
                     attempts -= 1
                 return "No data found in fallback range"
