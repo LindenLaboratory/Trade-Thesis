@@ -141,7 +141,7 @@ if True:
   vardict = {}
   if not vars:
     save("buyside",True)
-    save("update",{"TIME":0,"RETURN":0,"POSITIONS":[]})
+    save("update",{"TIME":1,"RETURN":0,"POSITIONS":[]})
     save("date",str(date.today()))
     vars = fetch()
   varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
