@@ -8,12 +8,13 @@ import re
 from datetime import datetime, timedelta, date
 from types import FunctionType
 from github import Github
+import os
 
 #SETUP
 app = Flask(__name__)
 CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
-GIT_TOKEN="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"
+GIT_TOKEN=os.getenv("GITTOKEN")
 headers = {
     "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
     "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
