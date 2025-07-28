@@ -7,6 +7,7 @@ import requests
 import re
 from datetime import datetime, timedelta, date
 from types import FunctionType
+from github import Github
 
 #SETUP
 app = Flask(__name__)
