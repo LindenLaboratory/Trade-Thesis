@@ -31,7 +31,7 @@ def git_read(repo_name, file_path):
       print(file)
       return file.decoded_content.decode()
   except Exception as e:
-      raise Exception("Error reading file: {e}")
+      raise Exception(f"Error reading file: {e}")
 def git_write(repo_name, file_path, new_content, commit_msg="Update via web server"):
     g = Github(GIT_TOKEN)
     repo = g.get_repo(repo_name)
