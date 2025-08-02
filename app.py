@@ -85,7 +85,7 @@ def simulate(username,timeframe,code):
     vars_=json.loads(f)
     print(vars_)
     if varname==None or value==None:
-        vars.setdefault(username, {}).update({
+        vars_.setdefault(username, {}).update({
     "buyside": True,
     "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
     "date": str(date.today())
@@ -191,19 +191,19 @@ if True:
   varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
   try:
     timea,timeb = timeframe.split("/")
-    if fetch("date") != str(date.today()):
+    if vars["date"] != str(date.today()):
       if timea < timeb:
         vardict["update"]["TIME"] += 1
         save("date",str(date.today()))
       else:
         return 100
-    codetotal=prereqs+varstr+(buyside_ if fetch("buyside") else sellside_).lstrip()
+    codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
     for i,j in vardict.items():
       if i=="POSITIONS":
-        pos=fetch("update")["POSITIONS"]
+        pos=vars["update"]["POSITIONS"]
         for k in j:
           if k not in pos:
             pos.append(k)
