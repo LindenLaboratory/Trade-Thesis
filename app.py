@@ -66,7 +66,7 @@ def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
   def save(varname,value):
-    f=git_read("Trade-Thesis","LindenLaboratory/variables.json")
+    f=git_read("LindenLaboratory/Trade-Thesis","variables.json")
     vars_=json.loads(f)
     vars_.setdefault(username, {})[varname] = value
     f=git_write("LindenLaboratory/Trade-Thesis","variables.json",json.dumps(vars_),"Updated variables file")
