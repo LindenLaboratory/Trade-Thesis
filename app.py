@@ -8,6 +8,7 @@ import re
 from datetime import datetime, timedelta, date
 from types import FunctionType
 import os
+import base64
 
 #SETUP
 app = Flask(__name__)
@@ -41,9 +42,10 @@ def git_read():
 def git_write(new_content, commit_msg):
     res = requests.get(API_URL, headers=HEADERS_, params={"ref": BRANCH})
     sha = res.json()["sha"] if res.status_code == 200 else None
+    encoded = base64.b64encode(json.dumps(new_content).encode("utf-8")).decode("utf-8")
     payload = {
         "message": commit_msg,
-        "content": json.dumps(new_content).encode("utf-8").decode("utf-8"),
+        "content": encoded,
         "branch": BRANCH
     }
     if sha:
