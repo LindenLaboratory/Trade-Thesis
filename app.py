@@ -117,6 +117,7 @@ if True:
     def THEN():
         global buyside, POSITIONS
         buyside = (False if buyside else True)
+        print("THEN")
         print(buyside)
     class Security:
         def __init__(self, ticker, qty=100,**kwargs):
@@ -212,7 +213,7 @@ if True:
         def RETURN(id):
           url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
           position=requests.get(url, headers=headers).json()
-return__=position["unrealized_plpc"]
+          return__=position["unrealized_plpc"]
           size__=position["market_value"]
           return return__,size__
         avg,total,pos_ = lambda lst,total: sum(lst)/len(lst)/total,0,[]
