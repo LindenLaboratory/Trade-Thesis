@@ -24,20 +24,23 @@ blogs=[]
 
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
-def git_read(repo_name, file_path):
-  g = Github(GIT_TOKEN)
-  try:
-      repo = g.get_repo(repo_name)
-      file = repo.get_contents(file_path)
-      print(file)
-      return file.decoded_content.decode()
-  except Exception as e:
-      raise Exception(f"Error reading file: {e}")
-def git_write(repo_name, file_path, new_content, commit_msg="Update via web server"):
+def git_read():
     g = Github(GIT_TOKEN)
-    repo = g.get_repo(repo_name)
-    file = repo.get_contents(file_path)
-    repo.update_file(file.path, commit_msg, new_content, file.sha)
+    try:
+        repo = g.get_repo("LindenLaboratory/Trade-Thesis")
+        file = repo.get_contents("variables.json", ref="main")
+        return file.decoded_content.decode()
+    except Exception as e:
+        raise Exception(f"Error reading file: {e}")
+
+def git_write(new_content, commit_msg):
+    g = Github(GIT_TOKEN)
+    repo = g.get_repo("LindenLaboratory/Trade-Thesis")
+    try:
+        file = repo.get_contents("variables.json", ref="main")
+        repo.update_file(file.path, commit_msg, new_content, file.sha, branch="main")
+    except github.GithubException.UnknownObjectException:
+        repo.create_file("variables.json", commit_msg, new_content, branch="main")
 def update(resa,resb):
     pass
 def get_sheet(GID):
@@ -66,12 +69,12 @@ def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
   def save(varname,value):
-    f=git_read("LindenLaboratory/Trade-Thesis","variables.json")
+    f=git_read()
     vars_=json.loads(f)
     vars_.setdefault(username, {})[varname] = value
-    f=git_write("LindenLaboratory/Trade-Thesis","variables.json",json.dumps(vars_),"Updated variables file")
+    f=git_write(json.dumps(vars_),"Updated variables file")
   def fetch(varname="ALL"):
-    f=git_read("LindenLaboratory/Trade-Thesis","variables.json")
+    f=git_read()
     vars = json.loads(f)
     try:
       if varname == "ALL":
