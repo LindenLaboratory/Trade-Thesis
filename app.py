@@ -219,13 +219,13 @@ if True:
           return_,size_=RETURN(position)
           total+=size_
           pos_.append(return_*size_)
-        vardict_.append(("update",{"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}))
+        vardict_["update"]={"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
       elif i=="TIME":
         pass
       elif not isinstance(j, (FunctionType, type)):
-        vardict_.append((i,j))
-      print(vardict,vardict_)
-      save({i:j for i,j in vardict_})
+        vardict_[i]=j
+    print(vardict,vardict_)
+    save(vardict_)
     return 300,vardict_
   except Exception as e:
     return str(e)
