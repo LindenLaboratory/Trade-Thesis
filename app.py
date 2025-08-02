@@ -15,13 +15,13 @@ import os
 app = Flask(__name__)
 CORS(app)
 SHEET_ID="1HoeLkmtjquTsQ6MHIPxz9Y4_ih4W-f6IH4JrZJjqvIQ"
-GIT_TOKEN=os.getenv("GITTOKEN")
 headers = {
     "APCA-API-KEY-ID": "PKUNIV2JETXYQ5F9ZQDE",
     "APCA-API-SECRET-KEY": "Bq8d26SsHV7tib7Uez61eVPVUSQtpCW59ncU3VLr",
     "accept": "application/json"
 }
 blogs=[]
+GIT_TOKEN=os.getenv("GITTOKEN")
 REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
 BRANCH = "main"
