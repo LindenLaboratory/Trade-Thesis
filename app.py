@@ -69,9 +69,9 @@ def simulate(username,timeframe,code):
     f=git_read("Trade-Thesis","LindenLaboratory/variables.json")
     vars_=json.loads(f)
     vars_.setdefault(username, {})[varname] = value
-    f=git_write("Trade-Thesis","LindenLaboratory/variables.json",json.dumps(vars_),"Updated variables file")
+    f=git_write("LindenLaboratory/Trade-Thesis","variables.json",json.dumps(vars_),"Updated variables file")
   def fetch(varname="ALL"):
-    f=git_read("Trade-Thesis","LindenLaboratory/variables.json")
+    f=git_read("LindenLaboratory/Trade-Thesis","variables.json")
     vars = json.loads(f)
     try:
       if varname == "ALL":
