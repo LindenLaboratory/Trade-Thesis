@@ -305,6 +305,7 @@ def tools():
     durl=f"https://drive.google.com/uc?export=download&id={id}"
     r = requests.get(durl)
     r.raise_for_status()
+    print(r.text)
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
