@@ -83,11 +83,11 @@ def simulate(username,timeframe,code):
   def save(varname,value):
     f=git_read()
     vars_=json.loads(f)
+    print(vars_)
     vars_.setdefault(username, {})[varname] = value
     f=git_write(vars_,"Updated variables file")
   def fetch(varname="ALL"):
     f=git_read()
-    print(f)
     vars = json.loads(f)
     try:
       if varname == "ALL":
