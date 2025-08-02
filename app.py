@@ -7,8 +7,6 @@ import requests
 import re
 from datetime import datetime, timedelta, date
 from types import FunctionType
-from github import Github
-from github.GithubException import UnknownObjectException
 import os
 
 #SETUP
