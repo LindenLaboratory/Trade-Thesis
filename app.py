@@ -27,7 +27,7 @@ REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
 BRANCH = "main"
 API_URL = f"https://api.github.com/repos/{REPO}/contents/{FILE}"
-HEADERS = {
+HEADERS_ = {
     "Authorization": f"token {GIT_TOKEN}",
     "Accept": "application/vnd.github+json"
 }
