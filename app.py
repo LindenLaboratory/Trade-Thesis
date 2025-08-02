@@ -38,7 +38,6 @@ def git_read():
     if res.status_code == 200:
         return requests.get(res.json()["download_url"]).text
     raise Exception(f"Read error: {res.status_code} {res.json().get('message')}")
-
 def git_write(new_content, commit_msg):
     res = requests.get(API_URL, headers=HEADERS_, params={"ref": BRANCH})
     sha = res.json()["sha"] if res.status_code == 200 else None
