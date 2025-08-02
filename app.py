@@ -22,22 +22,37 @@ headers = {
     "accept": "application/json"
 }
 blogs=[]
+GIT_TOKEN = "your_token_here"
+REPO = "LindenLaboratory/Trade-Thesis"
+FILE = "variables.json"
+BRANCH = "main"
+API_URL = f"https://api.github.com/repos/{REPO}/contents/{FILE}"
+HEADERS = {
+    "Authorization": f"token {GIT_TOKEN}",
+    "Accept": "application/vnd.github+json"
+}
 
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
 def git_read():
-    g = Github(GIT_TOKEN)
-    repo = g.get_repo("LindenLaboratory/Trade-Thesis")
-    file = repo.get_contents("variables.json", ref="main")
-    return file.decoded_content.decode()
+    res = requests.get(API_URL, headers=HEADERS_, params={"ref": BRANCH})
+    if res.status_code == 200:
+        return requests.get(res.json()["download_url"]).text
+    raise Exception(f"Read error: {res.status_code} {res.json().get('message')}")
+
 def git_write(new_content, commit_msg):
-    g = Github(GIT_TOKEN)
-    repo = g.get_repo("LindenLaboratory/Trade-Thesis")
-    try:
-        file = repo.get_contents("variables.json", ref="main")
-        repo.update_file(file.path, commit_msg, new_content, file.sha, branch="main")
-    except UnknownObjectException:
-        repo.create_file("variables.json", commit_msg, new_content, branch="main")
+    res = requests.get(API_URL, headers=HEADERS_, params={"ref": BRANCH})
+    sha = res.json()["sha"] if res.status_code == 200 else None
+    payload = {
+        "message": commit_msg,
+        "content": json.dumps(new_content).encode("utf-8").decode("utf-8"),
+        "branch": BRANCH
+    }
+    if sha:
+        payload["sha"] = sha
+    r = requests.put(API_URL, headers=HEADERS_, data=json.dumps(payload))
+    if r.status_code not in [200, 201]:
+        raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
 def update(resa,resb):
     pass
 def get_sheet(GID):
