@@ -22,7 +22,6 @@ headers = {
     "accept": "application/json"
 }
 blogs=[]
-GIT_TOKEN = "your_token_here"
 REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
 BRANCH = "main"
