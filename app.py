@@ -8,6 +8,7 @@ import re
 from datetime import datetime, timedelta, date
 from types import FunctionType
 from github import Github
+from github.GithubException import UnknownObjectException
 import os
 
 #SETUP
@@ -26,20 +27,16 @@ blogs=[]
 timestamp = lambda date: "-".join(reversed(date.split("/")))
 def git_read():
     g = Github(GIT_TOKEN)
-    try:
-        repo = g.get_repo("LindenLaboratory/Trade-Thesis")
-        file = repo.get_contents("variables.json", ref="main")
-        return file.decoded_content.decode()
-    except Exception as e:
-        raise Exception(f"Error reading file: {e}")
-
+    repo = g.get_repo("LindenLaboratory/Trade-Thesis")
+    file = repo.get_contents("variables.json", ref="main")
+    return file.decoded_content.decode()
 def git_write(new_content, commit_msg):
     g = Github(GIT_TOKEN)
     repo = g.get_repo("LindenLaboratory/Trade-Thesis")
     try:
         file = repo.get_contents("variables.json", ref="main")
         repo.update_file(file.path, commit_msg, new_content, file.sha, branch="main")
-    except github.GithubException.UnknownObjectException:
+    except UnknownObjectException:
         repo.create_file("variables.json", commit_msg, new_content, branch="main")
 def update(resa,resb):
     pass
