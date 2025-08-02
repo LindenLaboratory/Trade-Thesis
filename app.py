@@ -204,7 +204,7 @@ if True:
     vardict["buyside"] = globals().get("buyside")
     vardict_={}
     for i,j in vardict.items():
-      if i=="POSITIONS":
+      if i=="update":
         pos=vars["update"]["POSITIONS"]
         for k in j:
           if k not in pos:
@@ -221,8 +221,6 @@ if True:
           total+=size_
           pos_.append(return_*size_)
         vardict_["update"]={"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
-      elif i=="TIME":
-        pass
       elif not isinstance(j, (FunctionType, type)):
         vardict_[i]=j
     print(vardict,vardict_)
