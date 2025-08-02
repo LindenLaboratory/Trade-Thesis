@@ -80,12 +80,20 @@ def backtest(period,code):
 def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
-  def save(varname,value):
+  def save(varname=None,value=None):
     f=git_read()
     vars_=json.loads(f)
     print(vars_)
-    vars_.setdefault(username, {})[varname] = value
-    f=git_write(vars_,"Updated variables file")
+    if varname==None or value==None:
+        vars.setdefault(username, {}).update({
+    "buyside": True,
+    "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
+    "date": str(date.today())
+})
+        git_write(vars, "Updated all variables")
+    else:
+        vars_.setdefault(username, {})[varname] = value
+        git_write(vars_,"Updated variables file")
   def fetch(varname="ALL"):
     f=git_read()
     vars = json.loads(f)
@@ -174,10 +182,12 @@ if True:
   vars,varstr = fetch(),"\n"
   vardict = {}
   if not vars:
-    save("buyside",True)
-    save("update",{"TIME":1,"RETURN":0,"POSITIONS":[]})
-    save("date",str(date.today()))
-    vars = fetch()
+    save()
+    vars = {
+    "buyside": True,
+    "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
+    "date": str(date.today())
+    }
   varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
   try:
     timea,timeb = timeframe.split("/")
