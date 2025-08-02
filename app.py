@@ -19,7 +19,7 @@ headers = {
     "accept": "application/json"
 }
 blogs=[]
-GIT_TOKEN=os.getenv("GITTOKEN")
+GIT_TOKEN=os.getenv("GIT_TOKEN")
 print(GIT_TOKEN)
 REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
