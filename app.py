@@ -42,7 +42,8 @@ def git_read():
 def git_write(new_content, commit_msg):
     res = requests.get(API_URL, headers=HEADERS_, params={"ref": BRANCH})
     sha = res.json()["sha"] if res.status_code == 200 else None
-    encoded = base64.b64encode(json.dumps(new_content).encode("utf-8")).decode("utf-8")
+    raw = json.dumps(new_content, separators=(",", ":"))
+    encoded = base64.b64encode(raw.encode("utf-8")).decode("utf-8")
     payload = {
         "message": commit_msg,
         "content": encoded,
@@ -84,7 +85,7 @@ def simulate(username,timeframe,code):
     f=git_read()
     vars_=json.loads(f)
     vars_.setdefault(username, {})[varname] = value
-    f=git_write(json.dumps(vars_),"Updated variables file")
+    f=git_write(vars_,"Updated variables file")
   def fetch(varname="ALL"):
     f=git_read()
     vars = json.loads(f)
