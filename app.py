@@ -201,6 +201,7 @@ if True:
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
+    vardict_={}
     for i,j in vardict.items():
       if i=="POSITIONS":
         pos=vars["update"]["POSITIONS"]
@@ -218,12 +219,13 @@ if True:
           return_,size_=RETURN(position)
           total+=size_
           pos_.append(return_*size_)
-        save("update",{"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos})
+        vardict_.append(("update",{"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}))
       elif i=="TIME":
         pass
       elif not isinstance(j, (FunctionType, type)):
-        save(i,j)
-    return 300,fetch("update")
+        vardict_.append((i,j))
+      save({i:j for i,j in vardict_})
+    return 300,vardict_
   except Exception as e:
     return str(e)
 
