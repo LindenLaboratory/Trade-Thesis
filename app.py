@@ -117,6 +117,7 @@ if True:
     def THEN():
         global buyside, POSITIONS
         buyside = (False if buyside else True)
+        print(buyside)
     class Security:
         def __init__(self, ticker, qty=100,**kwargs):
             self.ticker=ticker
