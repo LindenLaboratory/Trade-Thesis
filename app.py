@@ -224,6 +224,7 @@ if True:
         pass
       elif not isinstance(j, (FunctionType, type)):
         vardict_.append((i,j))
+      print(vardict,vardict_)
       save({i:j for i,j in vardict_})
     return 300,vardict_
   except Exception as e:
