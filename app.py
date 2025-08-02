@@ -22,6 +22,7 @@ headers = {
 }
 blogs=[]
 GIT_TOKEN=os.getenv("GITTOKEN")
+print(GIT_TOKEN)
 REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
 BRANCH = "main"
