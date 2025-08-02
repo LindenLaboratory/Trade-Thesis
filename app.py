@@ -211,7 +211,7 @@ if True:
             pos.append(k)
         def RETURN(id):
           url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
-          position=requests.get(url, headers=headers)["unrealized_plpc"]
+          position=requests.get(url, headers=headers).json()["unrealized_plpc"]
           return__=position["unrealized_plpc"]
           size__=position["market_value"]
           return return__,size__
