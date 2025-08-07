@@ -83,7 +83,7 @@ def simulate(username,timeframe,code):
   def save(varname=None,value=None):
     f=git_read()
     vars_=json.loads(f)
-    print(vars_)
+    print("test_",f,vars_)
     if varname==None or value==None:
         vars_.setdefault(username, {}).update({
     "buyside": True,
