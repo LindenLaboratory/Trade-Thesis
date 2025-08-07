@@ -201,7 +201,7 @@ if True:
         save("date",str(date.today()))
       else:
         return 100
-    codetotal=varstr+prereqs+(buyside_ if vars["buyside"] else sellside_).lstrip()
+    codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
