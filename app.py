@@ -124,6 +124,7 @@ if True:
             self.ticker=ticker
             self.quantity=qty
         def ORDER(self,bs="buy"):
+            global update
             url = "https://paper-api.alpaca.markets/v2/orders"
             data = {
               "type": "market",
