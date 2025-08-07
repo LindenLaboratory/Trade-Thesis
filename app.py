@@ -133,8 +133,8 @@ if True:
               "side": bs
             }
             requests.post(url, headers=headers, json=data)
-            if not self.ticker in POSITIONS:
-                POSITIONS.append(self.ticker)
+            if not self.ticker in update['POSITIONS']:
+                update['POSITIONS'].append(self.ticker)
             return self.ticker
         def PRICE(self, date=0):
             if date == 0:
