@@ -204,10 +204,15 @@ if True:
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
+    print(vardict)#
+    try:#
+        print(globals.get("buyside"))#
+    except:pass#
     vardict_={}
     for i,j in vardict.items():
       if i=="update":
         pos=vars["update"]["POSITIONS"]
+        print(pos)#
         for k in j:
           if k not in pos:
             pos.append(k)
