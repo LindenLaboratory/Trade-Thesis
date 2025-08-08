@@ -86,12 +86,8 @@ def simulate(username,timeframe,code):
     f=git_read()
     vars_=json.loads(f)
     print("test_",f,vars_)
-    if varname==None or value==None:
-        vars_.setdefault(username, {}).update({
-    "buyside": True,
-    "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
-    "date": str(date.today())
-})
+    if varname==None:
+        vars_.setdefault(username, {}).update(value)
         git_write(vars, "Updated all variables")
     else:
         vars_.setdefault(username, {})[varname] = value
@@ -189,7 +185,7 @@ if True:
   vars,varstr = fetch(),"\n"
   vardict = {}
   if not vars:
-    save()
+    save(value={"buyside": True,"update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},"date": str(date.today())})
     vars = {
     "buyside": True,
     "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
@@ -239,7 +235,7 @@ if True:
       elif not isinstance(j, (FunctionType, type)):
         vardict_[i]=j
     print(vardict,vardict_)
-    save(username,vardict_)
+    save(value=vardict_)
     return [300,vardict_]
   #except Exception as e:
   #  return str(e)
