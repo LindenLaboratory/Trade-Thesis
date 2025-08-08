@@ -133,9 +133,9 @@ if True:
               "qty": self.quantity,
               "side": bs
             }
-            requests.post(url, headers=headers, json=data)
-            if not self.ticker in update['POSITIONS']:
-                update['POSITIONS'].append(self.ticker)
+            res=requests.post(url, headers=headers, json=data)
+            print(res.json())
+            update['POSITIONS'].append(self.ticker)
             return self.ticker
         def PRICE(self, date=0):
             if date == 0:
@@ -208,7 +208,7 @@ if True:
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
     vardict["update"] = globals().get("update")
-    print(vardict)#
+    print(vardict)
     vardict_={}
     for i,j in vardict.items():
       if i=="update":
@@ -220,6 +220,8 @@ if True:
         def RETURN(id):
           url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
           position=requests.get(url, headers=headers).json()
+          if "position does not exist" in str(position):
+            return None,None
           print(id,position)
           return__=position["unrealized_plpc"]
           size__=position["market_value"]
@@ -227,6 +229,7 @@ if True:
         avg,total,pos_ = lambda lst,total: sum(lst)/len(lst)/total,0,[]
         for position in pos:
           return_,size_=RETURN(position)
+          if not return_: continue
           total+=size_
           pos_.append(return_*size_)
         vardict_["update"]={"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
