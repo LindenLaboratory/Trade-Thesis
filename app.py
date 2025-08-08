@@ -21,7 +21,6 @@ headers = {
 }
 blogs=[]
 GIT_TOKEN=os.getenv("GIT_TOKEN")
-print(GIT_TOKEN)
 REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
 BRANCH = "main"
@@ -115,8 +114,7 @@ if True:
     def THEN():
         global buyside, POSITIONS
         buyside = (False if buyside else True)
-        print("THEN")
-        print(buyside)
+        print("THEN",buyside)
     class Security:
         def __init__(self, ticker, qty=100,**kwargs):
             self.ticker=ticker
@@ -199,18 +197,16 @@ if True:
         vardict["date"] = str(date.today())
       else:
         return [100]
-    print((buyside_ if vars["buyside"] else sellside_),vars["buyside"],sellside_)
+    print("BUYSIDE:",(buyside_ if vars["buyside"] else sellside_),vars["buyside"],sellside_)
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
     vardict["update"] = globals().get("update")
-    print(vardict)
     vardict_={}
     for i,j in vardict.items():
       if i=="update":
         pos_,pos=vardict["update"]["POSITIONS"],[]
-        print("Positions w/ repetition:",pos_)
         for k in j["POSITIONS"]:
           if k not in pos:
             pos.append(k)
@@ -218,8 +214,8 @@ if True:
           url = f"https://paper-api.alpaca.markets/v2/positions/{id}"
           position=requests.get(url, headers=headers).json()
           if "position does not exist" in str(position):
+            print("Position Error")
             return None,None
-          print(id,position)
           return__=float(position["unrealized_plpc"])
           size__=float(position["market_value"])
           return return__,size__
@@ -227,13 +223,11 @@ if True:
         for position in pos:
           return_,size_=RETURN(position)
           if not return_: continue
-          print(return_,size_)#
           total+=size_
           pos_.append(return_*size_)
         vardict_["update"]={"TIME":vardict["update"]["TIME"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
       elif not isinstance(j, (FunctionType, type)):
         vardict_[i]=j
-    print(vardict,vardict_)
     save(vardict_)
     return [300,vardict_]
   except Exception as e:
