@@ -53,7 +53,7 @@ def git_write(new_content, commit_msg):
     r = requests.put(API_URL, headers=HEADERS_, data=json.dumps(payload))
     if r.status_code not in [200, 201]:
         raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
-def update(res):
+def upload(res):
     if res[0] != 300:
         return None
     #upload
