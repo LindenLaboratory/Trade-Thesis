@@ -82,7 +82,7 @@ def backtest(period,code):
 def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
-  def save(varname=None,value=None):
+  def save(value,varname=None):
     f=git_read()
     vars_=json.loads(f)
     print("test_",f,vars_,value)
@@ -185,7 +185,6 @@ if True:
   vars,varstr = fetch(),"\n"
   vardict = {}
   if not vars:
-    save(value={"buyside": True,"update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},"date": str(date.today())})
     vars = {
     "buyside": True,
     "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
@@ -234,7 +233,7 @@ if True:
       elif not isinstance(j, (FunctionType, type)):
         vardict_[i]=j
     print(vardict,vardict_)
-    save(value=vardict_)
+    save(vardict_)
     return [300,vardict_]
   except Exception as e:
     return str(e)
