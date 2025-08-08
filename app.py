@@ -212,9 +212,9 @@ if True:
     vardict_={}
     for i,j in vardict.items():
       if i=="update":
-        pos=vars["update"]["POSITIONS"]
-        print(pos)#
-        for k in j:
+        pos_,pos=vardict["update"]["POSITIONS"],[]
+        print("Positions w/ repetition:",pos_)
+        for k in j["POSITIONS"]:
           if k not in pos:
             pos.append(k)
         def RETURN(id):
