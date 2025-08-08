@@ -55,7 +55,7 @@ def git_write(new_content, commit_msg):
         raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
 def update(res):
     if res[0] != 300:
-        break
+        return None
     #upload
 def get_sheet(GID):
   blogs=[]
