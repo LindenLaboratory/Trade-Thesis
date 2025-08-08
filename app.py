@@ -85,7 +85,7 @@ def simulate(username,timeframe,code):
   def save(varname=None,value=None):
     f=git_read()
     vars_=json.loads(f)
-    print("test_",f,vars_)
+    print("test_",f,vars_,value)
     if varname==None:
         vars_.setdefault(username, {}).update(value)
         git_write(vars, "Updated all variables")
@@ -192,8 +192,7 @@ if True:
     "date": str(date.today())
     }
   varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
-  #try:
-  if True:
+  try:
     timea,timeb = timeframe.split("/")
     if vars["date"] != str(date.today()):
       if timea < timeb:
@@ -237,8 +236,8 @@ if True:
     print(vardict,vardict_)
     save(value=vardict_)
     return [300,vardict_]
-  #except Exception as e:
-  #  return str(e)
+  except Exception as e:
+    return str(e)
 
 #MAINLOOP
   #PREREQS
