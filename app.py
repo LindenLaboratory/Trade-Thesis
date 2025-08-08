@@ -202,7 +202,7 @@ if True:
         vardict["update"]["TIME"] += 1
         save("date",str(date.today()))
       else:
-        return 100
+        return [100]
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
@@ -233,12 +233,12 @@ if True:
           print(return_,size_)#
           total+=size_
           pos_.append(return_*size_)
-        vardict_["update"]={"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
+        vardict_["update"]={"TIME":vardict["update"]["TIME"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
       elif not isinstance(j, (FunctionType, type)):
         vardict_[i]=j
     print(vardict,vardict_)
     save(vardict_)
-    return 300,vardict_
+    return [300,vardict_]
   #except Exception as e:
   #  return str(e)
 
@@ -355,7 +355,7 @@ def tools():
   for i in blogs:
     vars,code = get_data(i)
     code=code.replace("&nbsp;&nbsp;","\t")
-    codea,codeb=200,200
+    codea,codeb=[100],[100]
     if code == "N/A":
       codea,codeb=404,404
       continue
@@ -363,7 +363,7 @@ def tools():
       codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
       codeb=simulate(i["username"],vars["Timeframe"],code)
-    if codea==300 and codeb==300:
+    if codea[0]==300 and codeb[0]==300:
       upload(codea[1],codeb[1])
     result_codes.append((codea,codeb))
   return result_codes
