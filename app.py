@@ -179,7 +179,9 @@ if True:
             self.ticker=requests.get(url, headers=headers, params=params).json()["option_contracts"][0]["symbol"]
         def PRICE(self):
             url = f"https://paper-api.alpaca.markets/v2/options/contracts/{self.ticker}"
-            return requests.get(url, headers=headers)["close_price"]
+            res=requests.get(url, headers=headers)
+            print(res)
+            return res["close_price"]
 
   """
   vars,varstr = fetch(),"\n"
@@ -205,10 +207,8 @@ if True:
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
+    vardict["update"] = globals.get("update")
     print(vardict)#
-    try:#
-        print(globals.get("buyside"))#
-    except:pass#
     vardict_={}
     for i,j in vardict.items():
       if i=="update":
