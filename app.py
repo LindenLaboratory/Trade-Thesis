@@ -207,7 +207,7 @@ if True:
     print(codetotal)
     exec(codetotal, globals(), vardict)
     vardict["buyside"] = globals().get("buyside")
-    vardict["update"] = globals.get("update")
+    vardict["update"] = globals().get("update")
     print(vardict)#
     vardict_={}
     for i,j in vardict.items():
