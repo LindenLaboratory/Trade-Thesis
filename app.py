@@ -202,7 +202,7 @@ if True:
     if vars["date"] != str(date.today()):
       if timea < timeb:
         vardict["update"]["TIME"] += 1
-        save("date",str(date.today()))
+        vardict["date"] = str(date.today())
       else:
         return [100]
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
@@ -239,7 +239,7 @@ if True:
       elif not isinstance(j, (FunctionType, type)):
         vardict_[i]=j
     print(vardict,vardict_)
-    save(vardict_)
+    save(username,vardict_)
     return [300,vardict_]
   #except Exception as e:
   #  return str(e)
@@ -369,7 +369,3 @@ def tools():
     upload(codeb)
     result_codes.append((codea,codeb))
   return result_codes
-      
-    
-    
-      
