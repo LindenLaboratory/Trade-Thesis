@@ -88,7 +88,7 @@ def simulate(username,timeframe,code):
     print("test_",f,vars_,value)
     if varname==None:
         vars_.setdefault(username, {}).update(value)
-        git_write(vars, "Updated all variables")
+        git_write(vars_, "Updated all variables")
     else:
         vars_.setdefault(username, {})[varname] = value
         git_write(vars_,"Updated variables file")
