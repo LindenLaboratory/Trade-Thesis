@@ -53,8 +53,10 @@ def git_write(new_content, commit_msg):
     r = requests.put(API_URL, headers=HEADERS_, data=json.dumps(payload))
     if r.status_code not in [200, 201]:
         raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
-def update(resa,resb):
-    pass
+def update(res):
+    if res[0] != 300:
+        break
+    #upload
 def get_sheet(GID):
   blogs=[]
   df=pd.read_csv(f"https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}")
@@ -76,7 +78,7 @@ def get_sheet(GID):
     })
   return blogs
 def backtest(period,code):
-  pass
+  return [100,"Backtest function not yet complete"]
 def simulate(username,timeframe,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
@@ -363,8 +365,8 @@ def tools():
       codea=backtest(vars["Period"],code)
     if vars["Result"] == "":
       codeb=simulate(i["username"],vars["Timeframe"],code)
-    if codea[0]==300 and codeb[0]==300:
-      upload(codea[1],codeb[1])
+    upload(codea)
+    upload(codeb)
     result_codes.append((codea,codeb))
   return result_codes
       
