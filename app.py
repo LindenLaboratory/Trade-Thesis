@@ -199,6 +199,7 @@ if True:
         vardict["date"] = str(date.today())
       else:
         return [100]
+    print((buyside_ if vars["buyside"] else sellside_),vars["buyside"],sellside_)
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
