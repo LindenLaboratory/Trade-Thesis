@@ -223,13 +223,14 @@ if True:
           if "position does not exist" in str(position):
             return None,None
           print(id,position)
-          return__=position["unrealized_plpc"]
-          size__=position["market_value"]
+          return__=float(position["unrealized_plpc"])
+          size__=float(position["market_value"])
           return return__,size__
         avg,total,pos_ = lambda lst,total: sum(lst)/len(lst)/total,0,[]
         for position in pos:
           return_,size_=RETURN(position)
           if not return_: continue
+          print(return_,size_)#
           total+=size_
           pos_.append(return_*size_)
         vardict_["update"]={"TIME":vardict["update"]["time"],"RETURN":float(avg(pos_,total)),"POSITIONS":pos}
