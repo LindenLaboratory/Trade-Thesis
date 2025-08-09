@@ -187,9 +187,7 @@ if True:
     "update": {"TIME": 1, "RETURN": 0, "POSITIONS": []},
     "date": str(date.today())
     }
-  varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
-  #try:
-  if True:
+  try:
     timea,timeb = timeframe.split("/")
     if vars["date"] != str(date.today()):
       print("New Day")
@@ -199,6 +197,7 @@ if True:
         print(vars)
       else:
         return [100]
+    varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
@@ -231,8 +230,8 @@ if True:
         vardict_[i]=j
     save(vardict_)
     return [300,vardict_]
-  #except Exception as e:
-  #  return str(e)
+  except Exception as e:
+    return str(e)
 
 #MAINLOOP
   #PREREQS
