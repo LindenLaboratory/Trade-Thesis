@@ -189,7 +189,8 @@ if True:
     "date": str(date.today())
     }
   varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
-  try:
+  #try:
+  if True:
     timea,timeb = timeframe.split("/")
     if vars["date"] != str(date.today()):
       if timea < timeb:
@@ -230,8 +231,8 @@ if True:
         vardict_[i]=j
     save(vardict_)
     return [300,vardict_]
-  except Exception as e:
-    return str(e)
+  #except Exception as e:
+  #  return str(e)
 
 #MAINLOOP
   #PREREQS
