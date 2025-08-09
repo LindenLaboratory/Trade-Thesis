@@ -194,8 +194,8 @@ if True:
     timea,timeb = timeframe.split("/")
     if vars["date"] != str(date.today()):
       if timea < timeb:
-        vardict["update"]["TIME"] += 1
-        vardict["date"] = str(date.today())
+        vars["update"]["TIME"] += 1
+        vars["date"] = str(date.today())
       else:
         return [100]
     print("BUYSIDE:",(buyside_ if vars["buyside"] else sellside_),vars["buyside"],sellside_)
