@@ -178,7 +178,6 @@ if True:
             res=requests.get(url, headers=headers)
             print(res)
             return res["close_price"]
-
   """
   vars,varstr = fetch(),"\n"
   vardict = {}
@@ -193,12 +192,13 @@ if True:
   if True:
     timea,timeb = timeframe.split("/")
     if vars["date"] != str(date.today()):
+      print("New Day")
       if timea < timeb:
         vars["update"]["TIME"] += 1
         vars["date"] = str(date.today())
+        print(vars)
       else:
         return [100]
-    print("BUYSIDE:",(buyside_ if vars["buyside"] else sellside_),vars["buyside"],sellside_)
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
     exec(codetotal, globals(), vardict)
