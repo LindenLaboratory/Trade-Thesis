@@ -78,7 +78,7 @@ def get_sheet(GID):
   return blogs
 def backtest(period,code):
   return [100,"Backtest function not yet complete"]
-def simulate(username,timeframe,code):
+def simulate(username,timea,timeb,code):
   code = code.replace("THEN", "THEN()")
   buyside_,sellside_=code.split("-./")
   def save(value,varname=None):
@@ -188,15 +188,11 @@ if True:
     "date": str(date.today())
     }
   try:
-    timea,timeb = timeframe.split("/")
     if vars["date"] != str(date.today()):
       print("New Day")
-      if timea < timeb:
-        vars["update"]["TIME"] += 1
-        vars["date"] = str(date.today())
-        print(vars)
-      else:
-        return [100]
+      vars["update"]["TIME"] += 1
+      vars["date"] = str(date.today())
+      print(vars)
     varstr="\n"+"\n".join([f"{i}={repr(j)}" for i,j in vars.items()])+"\n"
     codetotal=prereqs+varstr+(buyside_ if vars["buyside"] else sellside_).lstrip()
     print(codetotal)
@@ -347,13 +343,14 @@ def tools():
     vars,code = get_data(i)
     code=code.replace("&nbsp;&nbsp;","\t")
     codea,codeb=[100],[100]
+    timea,timeb = vars["Timeframe"].split("/")
     if code == "N/A":
       codea,codeb=404,404
       continue
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
-    if vars["Result"] == "":
-      codeb=simulate(i["username"],vars["Timeframe"],code)
+    if not timea<timeb:
+      codeb=simulate(i["username"],timea,timeb,code)
     upload(codea)
     upload(codeb)
     result_codes.append((codea,codeb))
