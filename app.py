@@ -9,6 +9,10 @@ from datetime import datetime, timedelta, date
 from types import FunctionType
 import os
 import base64
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseUpload
+import io
 
 #SETUP
 app = Flask(__name__)
@@ -29,6 +33,8 @@ HEADERS_ = {
     "Authorization": f"token {GIT_TOKEN}",
     "Accept": "application/vnd.github+json"
 }
+SERVICE_ACCOUNT_FILE = "service_account.json"
+SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
@@ -52,9 +58,23 @@ def git_write(new_content, commit_msg):
     r = requests.put(API_URL, headers=HEADERS_, data=json.dumps(payload))
     if r.status_code not in [200, 201]:
         raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
-def upload(res):
+def upload(res,link):
     if res[0] != 300:
         return None
+    text_content = ""#FINISH THIS
+    exit(0)
+    file_id = link.split("/d/")[1].split("/")[0]
+    creds = service_account.Credentials.from_service_account_file(
+        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+    )
+    service = build("drive", "v3", credentials=creds)
+    media_body = MediaIoBaseUpload(io.BytesIO(text_content.encode("utf-8")),
+                                   mimetype="text/plain")
+    service.files().update(
+        fileId=file_id,
+        media_body=media_body
+    ).execute()
+
     #upload
 def get_sheet(GID):
   blogs=[]
@@ -349,9 +369,10 @@ def tools():
       continue
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
-    if not timea<timeb:
+    if timea<=timeb:
       codeb=simulate(i["username"],timea,timeb,code)
-    upload(codea)
-    upload(codeb)
+      upl_=lambda code: upload(code,blogs["url"]) if code[0]==300 else None 
+    upl_(codea)
+    upl_(codeb)
     result_codes.append((codea,codeb))
   return result_codes
