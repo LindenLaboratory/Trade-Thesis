@@ -67,6 +67,7 @@ def upload(res,code):
     if "RETURN" in vars_:
         vars__["Result"]=vars_["RETURN"]
     if "TIME" in vars:
+        print("test")
         vars__["Timeframe"]=vars_["TIME"]
     print(vars_,vars__)
     for i, line in enumerate(lines):
@@ -75,6 +76,8 @@ def upload(res,code):
                 if "/" in line:
                     slashside=line.split("/")[-1]
                     lines[i]=f"**{k}:** {v}/{slashside}"
+                elif type(v) == float:
+                    lines[i]=f"**{k}:** {round(v,5)}% "
                 else:
                     lines[i]=f"**{k}:** {v} "
                 print(lines[i])
