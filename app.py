@@ -62,8 +62,7 @@ def upload(res,link):
     if res[0] != 300:
         return None
     text_content = ""#FINISH THIS
-    exit(0)
-    file_id = link.split("/d/")[1].split("/")[0]
+    '''file_id = link.split("/d/")[1].split("/")[0]
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -73,7 +72,7 @@ def upload(res,link):
     service.files().update(
         fileId=file_id,
         media_body=media_body
-    ).execute()
+    ).execute()'''
 
     #upload
 def get_sheet(GID):
@@ -371,6 +370,7 @@ def tools():
       codea=backtest(vars["Period"],code)
     print(timea,timeb)
     if timea<=timeb:
+      print("Simulation Starting")
       codeb=simulate(i["username"],timea,timeb,code)
       upl_=lambda code: upload(code,blogs["url"]) if code[0]==300 else None 
     upl_(codea)
