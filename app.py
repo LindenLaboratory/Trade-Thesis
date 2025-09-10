@@ -34,10 +34,8 @@ HEADERS_ = {
     "Authorization": f"token {GIT_TOKEN}",
     "Accept": "application/vnd.github+json"
 }
-SERVICE_ACCOUNT_FILE = "service_account.json"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-with open(SERVICE_ACCOUNT_FILE) as f:
-    f.write(str(GOOGLE_CREDS))
+
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
 def git_read():
