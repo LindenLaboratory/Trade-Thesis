@@ -58,7 +58,7 @@ def git_write(new_content, commit_msg):
     r = requests.put(API_URL, headers=HEADERS_, data=json.dumps(payload))
     if r.status_code not in [200, 201]:
         raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
-def upload(res,code):
+def upload(res,code,link):
     if res[0] != 300:
         return None
     lines = code.splitlines()
@@ -66,8 +66,7 @@ def upload(res,code):
     vars_=vars.get("update",{})
     if "RETURN" in vars_:
         vars__["Result"]=vars_["RETURN"]
-    if "TIME" in vars:
-        print("test")
+    if "TIME" in vars_:
         vars__["Timeframe"]=vars_["TIME"]
     print(vars_,vars__)
     for i, line in enumerate(lines):
@@ -83,17 +82,16 @@ def upload(res,code):
                 print(lines[i])
     code="\n".join(lines)
     print(code)
-    '''file_id = link.split("/d/")[1].split("/")[0]
+    file_id = link.split("/d/")[1].split("/")[0]
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
     service = build("drive", "v3", credentials=creds)
-    media_body = MediaIoBaseUpload(io.BytesIO(text_content.encode("utf-8")),
-                                   mimetype="text/plain")
+    media_body = MediaIoBaseUpload(io.BytesIO(code.encode("utf-8")), mimetype="text/plain")
     service.files().update(
         fileId=file_id,
         media_body=media_body
-    ).execute()'''
+    ).execute()
 
     #upload
 def get_sheet(GID):
@@ -377,10 +375,10 @@ def tools():
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
-    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text]
+    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text,blog['url']]
   result_codes=[]
   for i in blogs:
-    vars,code,txt = get_data(i)
+    vars,code,txt,lnk = get_data(i)
     code=code.replace("&nbsp;&nbsp;","\t")
     codea,codeb=[100],[100]
     timea,timeb = vars["Timeframe"].split("/")
@@ -393,7 +391,7 @@ def tools():
     if timea<=timeb:
       print("Simulation Starting")
       codeb=simulate(i["username"],timea,timeb,code)
-      upl_=lambda code_: upload(code_,txt) if code_[0]==300 else None 
+      upl_=lambda code_: upload(code_,txt,lnk) if code_[0]==300 else None 
     upl_(codea)
     upl_(codeb)
     result_codes.append((codea,codeb))
