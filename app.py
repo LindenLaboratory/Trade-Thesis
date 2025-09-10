@@ -35,7 +35,8 @@ HEADERS_ = {
 }
 SERVICE_ACCOUNT_FILE = "service_account.json"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-
+with open("service_account.json") as f:
+    f.write(os.getenv("GOOGLE_CREDS"))
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
 def git_read():
