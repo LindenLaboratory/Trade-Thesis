@@ -62,10 +62,20 @@ def upload(res,code):
     if res[0] != 300:
         return None
     lines = code.splitlines()
+    vars,vars__=res[1],{}
+    vars_=vars.get("update",{})
+    if "RETURN" in vars_:
+        vars__["Result"]=vars_["RETURN"]
+    if "TIME" in vars:
+        vars__["Timeframe"]=vars_["TIME"]
     for i, line in enumerate(lines):
-        for k,v in res[1].items():
+        for k,v in vars.items():
             if line.strip().startswith(f"**{k}:**"):
-                lines[i]=f"**{k}:** {v}"
+                if "/" in line:
+                    slashside=line.split("/")[-1]
+                    lines[i]=f"**{k}:** {v}/{slashside}"
+                else:
+                    lines[i]=f"**{k}:** {v} "
     code="\n".join(lines)
     print(code)
     '''file_id = link.split("/d/")[1].split("/")[0]
