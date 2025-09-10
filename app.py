@@ -77,6 +77,7 @@ def upload(res,code):
                     lines[i]=f"**{k}:** {v}/{slashside}"
                 else:
                     lines[i]=f"**{k}:** {v} "
+                print(lines[i])
     code="\n".join(lines)
     print(code)
     '''file_id = link.split("/d/")[1].split("/")[0]
