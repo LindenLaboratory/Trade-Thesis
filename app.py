@@ -62,15 +62,15 @@ def upload(res,code,link):
     if res[0] != 300:
         return None
     lines = code.splitlines()
-    vars,vars__=res[1],{}
+    vars,=res[1]
     vars_=vars.get("update",{})
     if "RETURN" in vars_:
-        vars__["Result"]=vars_["RETURN"]
+        vars["Result"]=vars_["RETURN"]
     if "TIME" in vars_:
-        vars__["Timeframe"]=vars_["TIME"]
-    print(vars_,vars__)
+        vars["Timeframe"]=vars_["TIME"]
+    print(vars_,vars)
     for i, line in enumerate(lines):
-        for k,v in vars__.items():
+        for k,v in vars.items():
             if line.strip().startswith(f"**{k}:**"):
                 if "/" in line:
                     slashside=line.split("/")[-1]
@@ -82,14 +82,13 @@ def upload(res,code,link):
                 print(lines[i])
     code="\n".join(lines)
     print(code,link)
-    file_id = link.split("/d/")[1].split("/")[0]
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
     service = build("drive", "v3", credentials=creds)
     media_body = MediaIoBaseUpload(io.BytesIO(code.encode("utf-8")), mimetype="text/plain")
     service.files().update(
-        fileId=file_id,
+        fileId=link,
         media_body=media_body
     ).execute()
 
@@ -375,7 +374,7 @@ def tools():
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
-    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text,blog['url']]
+    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text,id]]
   result_codes=[]
   for i in blogs:
     vars,code,txt,lnk = get_data(i)
