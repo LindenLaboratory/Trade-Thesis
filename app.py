@@ -58,10 +58,16 @@ def git_write(new_content, commit_msg):
     r = requests.put(API_URL, headers=HEADERS_, data=json.dumps(payload))
     if r.status_code not in [200, 201]:
         raise Exception(f"Write error: {r.status_code} {r.json().get('message')}")
-def upload(res,link):
+def upload(res,code):
     if res[0] != 300:
         return None
-    text_content = ""#FINISH THIS
+    lines = code.splitlines()
+    for i, line in enumerate(lines):
+        for k,v in res[1].items():
+            if line.strip().startswith(f"**{k}:**"):
+                lines[i]=f"**{k}:** {v}"
+    code="\n".join(lines)
+    print(code)
     '''file_id = link.split("/d/")[1].split("/")[0]
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
@@ -356,10 +362,10 @@ def tools():
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
-    return [{k.strip():v.strip() for k, v in matches},parts[2],durl]
+    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text]
   result_codes=[]
   for i in blogs:
-    vars,code,url = get_data(i)
+    vars,code,txt = get_data(i)
     code=code.replace("&nbsp;&nbsp;","\t")
     codea,codeb=[100],[100]
     timea,timeb = vars["Timeframe"].split("/")
@@ -372,7 +378,7 @@ def tools():
     if timea<=timeb:
       print("Simulation Starting")
       codeb=simulate(i["username"],timea,timeb,code)
-      upl_=lambda code: upload(code,url) if code[0]==300 else None 
+      upl_=lambda code_: upload(code_,txt) if code_[0]==300 else None 
     upl_(codea)
     upl_(codeb)
     result_codes.append((codea,codeb))
