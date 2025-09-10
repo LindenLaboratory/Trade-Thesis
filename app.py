@@ -356,10 +356,10 @@ def tools():
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
-    return ({k.strip():v.strip() for k, v in matches},parts[2])
+    return [{k.strip():v.strip() for k, v in matches},parts[2],durl]
   result_codes=[]
   for i in blogs:
-    vars,code = get_data(i)
+    vars,code,url = get_data(i)
     code=code.replace("&nbsp;&nbsp;","\t")
     codea,codeb=[100],[100]
     timea,timeb = vars["Timeframe"].split("/")
@@ -372,7 +372,7 @@ def tools():
     if timea<=timeb:
       print("Simulation Starting")
       codeb=simulate(i["username"],timea,timeb,code)
-      upl_=lambda code: upload(code,blogs["url"]) if code[0]==300 else None 
+      upl_=lambda code: upload(code,url) if code[0]==300 else None 
     upl_(codea)
     upl_(codeb)
     result_codes.append((codea,codeb))
