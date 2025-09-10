@@ -68,8 +68,9 @@ def upload(res,code):
         vars__["Result"]=vars_["RETURN"]
     if "TIME" in vars:
         vars__["Timeframe"]=vars_["TIME"]
+    print(vars__)
     for i, line in enumerate(lines):
-        for k,v in vars.items():
+        for k,v in vars__.items():
             if line.strip().startswith(f"**{k}:**"):
                 if "/" in line:
                     slashside=line.split("/")[-1]
