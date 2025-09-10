@@ -374,7 +374,7 @@ def tools():
     parts = re.split(r'^## .*\n', r.text, flags=re.M)
     sections = ([p.strip() for p in parts if p.strip()])
     matches = re.findall(r'\*\*(.+?):\*\*(.*)', sections[1])
-    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text,id]]
+    return [{k.strip():v.strip() for k, v in matches},parts[2],r.text,id]
   result_codes=[]
   for i in blogs:
     vars,code,txt,lnk = get_data(i)
