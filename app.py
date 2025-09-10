@@ -81,7 +81,7 @@ def upload(res,code,link):
                     lines[i]=f"**{k}:** {v} "
                 print(lines[i])
     code="\n".join(lines)
-    print(code)
+    print(code,link)
     file_id = link.split("/d/")[1].split("/")[0]
     creds = service_account.Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
