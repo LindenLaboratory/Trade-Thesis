@@ -62,7 +62,7 @@ def upload(res,code,link):
     if res[0] != 300:
         return None
     lines = code.splitlines()
-    vars,=res[1]
+    vars=res[1]
     vars_=vars.get("update",{})
     if "RETURN" in vars_:
         vars["Result"]=vars_["RETURN"]
