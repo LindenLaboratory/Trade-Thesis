@@ -25,6 +25,7 @@ headers = {
 }
 blogs=[]
 GIT_TOKEN=os.getenv("GIT_TOKEN")
+GOOGLE_CREDS=os.getenv("GOOGLE_CREDS")
 REPO = "LindenLaboratory/Trade-Thesis"
 FILE = "variables.json"
 BRANCH = "main"
@@ -35,8 +36,8 @@ HEADERS_ = {
 }
 SERVICE_ACCOUNT_FILE = "service_account.json"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-with open("service_account.json") as f:
-    f.write(os.getenv("GOOGLE_CREDS"))
+with open(SERVICE_ACCOUNT_FILE) as f:
+    f.write(str(GOOGLE_CREDS))
 #FUNCTIONS
 timestamp = lambda date: "-".join(reversed(date.split("/")))
 def git_read():
