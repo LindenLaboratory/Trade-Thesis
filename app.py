@@ -369,6 +369,7 @@ def tools():
       continue
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
+    print(timea,timeb)
     if timea<=timeb:
       codeb=simulate(i["username"],timea,timeb,code)
       upl_=lambda code: upload(code,blogs["url"]) if code[0]==300 else None 
