@@ -84,8 +84,8 @@ def upload(res,code,link):
                 print(lines[i])
     code="\n".join(lines)
     print(code,link)
-    creds = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+    creds = service_account.Credentials.from_service_account_info(
+        json.loads(GOOGLE_CREDS), scopes=SCOPES
     )
     service = build("drive", "v3", credentials=creds)
     media_body = MediaIoBaseUpload(io.BytesIO(code.encode("utf-8")), mimetype="text/plain")
