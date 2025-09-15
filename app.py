@@ -387,7 +387,7 @@ def tools():
     if vars["Backtest Result"] == "":
       codea=backtest(vars["Period"],code)
     print(timea,timeb)
-    if timea<timeb+1:
+    if Int(timea)<int(timeb)+1:
       print("Simulation Starting")
       codeb=simulate(i["username"],timea,timeb,code)
     upl_=lambda code_: upload(code_,txt,lnk) if code_[0]==300 else None 
